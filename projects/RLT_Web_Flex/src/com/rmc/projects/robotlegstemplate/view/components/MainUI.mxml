@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group 
+	
+		xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		xmlns:s="library://ns.adobe.com/flex/spark" 
+		xmlns:mx="library://ns.adobe.com/flex/mx" 
+		
+		>
+	
+	<fx:Script>
+		<![CDATA[
+			
+			/**
+			 * <p>CLASS   : The text and buttons for the application</p>
+			 * 
+			 * <p>DATE    : Apr 05, 2010</p>
+			 * <p>AUTHOR  : Samuel Asher Rivello  info [at] RivelloMultimediaConsulting [dot] com</p>
+			 * <p>COMPANY : Rivello Multimedia Consulting. Adobe Flash and Flex Services of  
+			 *              Software Architecture, Consulting, Development, and Training</p>
+			 * 
+			 * @example Here is a code example.  
+			 * <listing version="3.0" >
+			 * 	//Code example goes here.
+			 * </listing>
+			 *
+			 * <span class="hide">Any hidden comments go here.</span>
+			 *
+			 */
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<!-- Layout -->
+	<s:layout>
+		<s:VerticalLayout
+			paddingBottom	= "0"
+			paddingLeft		= "0"
+			paddingRight	= "0"
+			paddingTop		= "0"
+			/>
+	</s:layout>
+	
+	
+	<!-- Place any UI components here. -->	
+	<s:Panel id = "panel" width="400" height="300" >
+		
+		<s:layout>
+			<s:VerticalLayout
+				paddingBottom	= "10"
+				paddingLeft		= "10"
+				paddingRight	= "10"
+				paddingTop		= "10"
+				/>
+		</s:layout>
+		
+		<s:TextArea id = "textarea" 				width="100%" height="100%" editable="false" selectable="false"	/>
+		<s:Button 	id = "loadMessage_button"  		width="100%" height="100%"  />
+		<s:Button 	id = "clearMessage_button"  	width="100%" height="100%"  />
+
+	</s:Panel>
+	
+</s:Group>

@@ -1,0 +1,30 @@
+<phrases>
+	
+	<!-- DON'T ADD 'ES' HERE SO YOU CAN SEE HOW IT FAILS GRACEFULLY TO USE ENGLISH -->
+	<phrase name = "panelTitle_str">
+		<EN>RobotLegsTemplate</EN>
+	</phrase>
+	
+	
+	<!-- ADD 'EN' & 'ES' TO ALL OF THESE -->
+	<phrase name = "loadMessageButtonLabel_str">
+		<EN>Load Message!</EN>
+		<ES>Carga Mensaje!</ES>
+	</phrase>
+	<phrase name = "loadMessageButtonToolTip_str">
+		<EN>Click This Button To Load The Message</EN>
+		<ES>Empuje Este Button Para Borrar El Mensaje</ES>
+	</phrase>
+	
+	<phrase name = "clearMessageButtonLabel_str">
+		<EN>Clear Message!</EN>
+		<ES>Borre Mensaje!</ES>
+	</phrase>
+	
+	<phrase name = "clearMessageButtonToolTip_str">
+		<EN>Click This Button To Clear The Message</EN>
+		<ES>Empuje Este Button Para Borrar El Mensaje</ES>
+	</phrase>
+	
+	
+</phrases>

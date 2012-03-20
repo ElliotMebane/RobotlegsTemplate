@@ -1,0 +1,74 @@
+/* CSS file */
+@namespace s "library://ns.adobe.com/flex/spark";
+@namespace mx "library://ns.adobe.com/flex/mx";
+
+
+/* A Few Fully Functioning Styles, For Examples */
+s|Application{
+	background-color: #cfcfcf;
+	font-family: FranklinGothicMedium;
+}
+
+s|Panel {
+   background-color: #afafaf;
+}
+
+s|Label {
+	font-size: 12;
+}
+
+s|Button s|Label {
+	font-size: 20;
+}
+
+s|TextArea {
+	font-size: 50;
+    text-align:center;
+	vertical-align:middle;
+	font-family: Candara;
+}
+
+/* Fonts. Only 1 is in use above.  Experiment with others */
+@font-face {
+	src:url("../assets_compiletime/fonts/Candara.ttf");
+	fontFamily: Candara;
+	embedAsCFF: true;
+}
+
+@font-face {
+	src:url("../assets_compiletime/fonts/Candara Bold.ttf");
+	fontFamily: Candara;
+	font-weight: bold;
+	embedAsCFF: true;
+}
+
+@font-face {
+	src:url("../assets_compiletime/fonts/Candara Italic.ttf");
+	fontFamily: Candara;
+	font-style:italic;
+	embedAsCFF: true;
+}
+
+
+@font-face {
+	src:url("../assets_compiletime/fonts/Candara Bold Italic.ttf");
+	fontFamily: Candara;
+	font-weight: bold;
+	font-style:italic;
+	embedAsCFF: true;
+}
+
+@font-face {
+	src:url("../assets_compiletime/fonts/Franklin Gothic Medium.ttf");
+	fontFamily: FranklinGothicMedium;
+	embedAsCFF: true;
+	font-style:normal;
+}
+
+@font-face {
+	src:url("../assets_compiletime/fonts/Franklin Gothic Medium Italic.ttf");
+	fontFamily: FranklinGothicMedium;
+	embedAsCFF: true;
+	font-style:italic;
+}
+

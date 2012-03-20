@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application 
+	xmlns:components="com.rmc.projects.robotlegstemplate.view.components.*"
+	xmlns:robotlegstemplate="com.rmc.projects.robotlegstemplate.*" 
+	xmlns:s="library://ns.adobe.com/flex/spark" 
+	xmlns:mx="library://ns.adobe.com/flex/mx" 
+	xmlns:fx="http://ns.adobe.com/mxml/2009" 
+	width="600" 
+	height="700" 
+	
+	creationComplete="_onCreationComplete (event);"
+	
+	>
+	
+	<fx:Script>
+		<![CDATA[
+			
+			/**
+			 * Copyright (C) 2005-2011 by Rivello Multimedia Consulting (RMC).                    
+			 * code [at] RivelloMultimediaConsulting [dot] com                                                  
+			 *                                                                      
+			 * Permission is hereby granted, free of charge, to any person obtaining
+			 * a copy of this software and associated documentation files (the      
+			 * "Software"), to deal in the Software without restriction, including  
+			 * without limitation the rights to use, copy, modify, merge, publish,  
+			 * distribute, sublicense, and#or sell copies of the Software, and to   
+			 * permit persons to whom the Software is furnished to do so, subject to
+			 * the following conditions:                                            
+			 *                                                                      
+			 * The above copyright notice and this permission notice shall be       
+			 * included in all copies or substantial portions of the Software.      
+			 *                                                                      
+			 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,      
+			 * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF   
+			 * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+			 * IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR    
+			 * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+			 * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+			 * OTHER DEALINGS IN THE SOFTWARE.                                      
+			 */
+			
+			
+			
+			
+			//--------------------------------------
+			//  Imports
+			//--------------------------------------
+			import mx.events.FlexEvent;
+			
+			//--------------------------------------
+			//  Properties
+			//--------------------------------------
+			
+			//--------------------------------------
+			//  Methods
+			//--------------------------------------		
+			
+			//--------------------------------------
+			//  Events
+			//--------------------------------------	
+			/**
+			 * Handles the aEvent: <code>FlexEvent.CREATION_COMPLETE</code>.
+			 * 
+			 * @param aEvent <code>FlexEvent</code> The incoming aEvent payload.
+			 *  
+			 * @return void
+			 * 
+			 */
+			protected function _onCreationComplete (aEvent : FlexEvent):void
+			{
+				//INSTRUCTIONAL TRACE #1 OF 3
+				trace ("onCreationComplete()");
+			}
+			
+		]]>
+	</fx:Script>
+	
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<robotlegstemplate:RobotLegsTemplateContext contextView="{this}" />
+	</fx:Declarations>
+	
+	<!-- Import Styles -->
+	<fx:Style source="./styles/styles.css" /> 
+	
+	<!-- Do Layout Here -->
+	<s:layout>
+		<s:VerticalLayout 
+			paddingBottom	=	"10"
+			paddingLeft		=	"10"
+			paddingRight		=	"10"
+			paddingTop		=	"10"
+			horizontalAlign	=	"center"
+			gap				=	"20"
+			/>
+	</s:layout>
+	
+	<!-- Place visual elements here -->
+	<components:MainUI verticalCenter="middle" />	
+	
+</s:Application>
+

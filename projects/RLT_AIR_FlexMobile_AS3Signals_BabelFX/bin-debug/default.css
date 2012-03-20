@@ -1,0 +1,30 @@
+/* CSS file */
+@namespace s "library://ns.adobe.com/flex/spark";
+
+
+s|ViewNavigatorApplication {
+	
+}
+
+s|ActionBar
+{
+	chromeColor: #229988;
+	titleAlign: center;
+}
+
+s|ActionBar #titleDisplay
+{
+	color: #CCCCCC;
+	fontSize: 40;
+	fontFamily: "Comic Sans MS";
+}
+
+s|TabbedViewNavigator #tabBar
+{
+	chromeColor: #229988;
+	color: #CCCCCC;
+	fontFamily: "Comic Sans MS";
+	iconPlacement:left;
+	textDecoration:underline;
+}
+

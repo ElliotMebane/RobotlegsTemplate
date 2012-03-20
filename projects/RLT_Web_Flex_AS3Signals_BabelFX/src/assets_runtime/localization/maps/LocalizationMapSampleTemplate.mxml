@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<l10n:LocaleMap 	
+	
+	
+					enableLog="true"
+					xmlns:factory="mx.core.*" 
+					xmlns:mx="http://www.adobe.com/2006/mxml" 
+					xmlns:l10n="http://l10n.babelfx.org/" >
+	
+	<!--
+	
+	localeChanging="reloadPhones(event);"
+	
+	
+	
+	
+	
+	
+	The meta data tags below reference bundles so embedding process works; 
+	if ExternalLocaleCommand is used for runtime loaded, then disable this section 
+	
+	Compiler args 
+	
+	-locale=en_US -allow-source-path-overlap=true -source-path+=l10n/locale/{locale}
+	
+	With the above compiler args, we insure that the en_US bundle (property file) is embedded;
+	and available by default. 
+	
+	<mx:Metadata>
+	[ResourceBundle("store")]
+	[ResourceBundle("language")]
+	</mx:Metadata>
+	-->
+	
+	
+	<mx:Script>
+		<![CDATA[
+			
+			/*
+			import org.babelfx.commands.ExternalLocaleCommand;
+			import org.babelfx.events.LocaleMapEvent;
+			import com.store.Catalog;
+			import com.store.details.PhoneDetails;
+			
+			import l10n.views.LanguageBar;
+			*/
+			/* 
+			* Using compiler arguments -locale=en_US,es_ES,fr_FR,zh_CN -allow-source-path-overlap=true -source-path+=l10n/locale/{locale}
+			* with the metaTag above forces the compiler to EMBED all locales as compiled resource bundles
+			* Or use -locale="en_US" without [ResourceBundles] to force runtime loading of external bundles for es_ES, zh_CN, fr_FR
+			* Note: you should ANT build scripts to build and deploy the external bundles; see /build/buildResourceBundles.xml
+			*/
+			
+			[Bindable] 
+			public var phone : Object = null;
+			
+			
+			/**
+			 *  Shared eventHandler fires when locales change to new Catalog xml data to be loaded
+			 *  This xml data has localized versions of the catalog.
+			 */
+			/*
+			private function onLocaleChanged(event:Event):void {
+				var sri 	: ResourceInjector  = (event.target as ResourceInjector);
+				var details : PhoneDetails           = sri.targetInstances[0] as PhoneDetails; 
+				var catalog : Catalog				 = sri.targetInstances[0] as Catalog;
+				
+				// And clear out the text description area...
+				if (details != null) 	details.phone = null;
+				if (catalog != null)    _catalog      = catalog;
+				
+				reloadPhones();
+				
+			}
+			
+			*/
+			/**
+			 * When locale is changing or the Catalog instance is ready, the call to reload
+			 * the phone data. Use the loadCatalog() method since it also shows a progress indicator.
+			 * 
+			 * @param event LocaleMapEvent.LOCALE_CHANGING or null
+			 */
+			/*
+			private function reloadPhones(event:LocaleMapEvent=null):void {
+				if (!event || (event.type == LocaleMapEvent.LOCALE_CHANGING)) {
+					if (_catalog != null)  {
+						// Dynamically reload the XML data with localized text for each Phone catalog entry
+						_catalog.loadCatalog();
+					}
+				}
+			}
+			*/
+			
+			//private var _catalog : Catalog = null;
+		]]>
+	</mx:Script>
+	
+	<!-- 
+	The command factory instance below allows the l10nInjection engine to load external resource bundles from
+	a custom deploy directory 'assets/locales/' name encoded by locale code
+	e.g.  en_US.swf, zh_CN.swf, etc.
+
+	<l10n:commandFactory>
+		<factory:ClassFactory generator="{ExternalLocaleCommand}">
+			<factory:properties>
+				<mx:Object externalPath="assets/locales/\{0\}.swf"/>
+			</factory:properties>
+		</factory:ClassFactory>
+	</l10n:commandFactory>
+	
+	
+	<l10n:ResourceInjector bundleName="store" target="{Catalog}" localeChange="onLocaleChanged(event);">
+		<l10n:ResourceSetter 		property="catalogLoader.url" 			key="data.url" />
+		
+		<l10n:ResourceSetter 		property="lblCatalog.text" 				key="catalog.title" />
+		
+		<l10n:ResourceSetter 		property="lblFilters.text" 				key="filters.title" />
+		<l10n:ResourceSetter 		property="lblMaxPrice.text" 			key="filters.maxPrice" />
+		<l10n:ResourceSetter 		property="chbxCamera.label" 			key="filters.option.camera" />
+		<l10n:ResourceSetter 		property="chbxVideo.label" 				key="filters.option.video" />
+		<l10n:ResourceSetter 		property="chbxTriband.label" 			key="filters.option.triband" />
+	</l10n:ResourceInjector>
+	
+	<l10n:ResourceInjector  bundleName="store" target="{PhoneDetails}" localeChange="onLocaleChanged(event);">
+		<l10n:ResourceSetter 		property="lblDescription.text" 			key="details.title" 		parameters="{[phone.name]}"/>
+	</l10n:ResourceInjector>
+	
+	<l10n:ResourceInjector  bundleName="language" target="{LanguageBar}">
+		<l10n:ResourceSetter 		property="lblBarHelp.text" 				key="languagebar.title" 	parameters="{['target.selectedLocale']}" />
+	-->
+		<!-- See LocaleAssets for sort order on Flags 
+		<l10n:ResourceSetter  	property="flags[0].toolTip" 			key="flag.toolTip.en_US" />
+		<l10n:ResourceSetter  	property="flags[1].toolTip" 			key="flag.toolTip.fr_FR" />
+		<l10n:ResourceSetter  	property="flags[2].toolTip" 			key="flag.toolTip.es_ES" />
+		<l10n:ResourceSetter  	property="flags[3].toolTip" 			key="flag.toolTip.zh_CN" />
+	</l10n:ResourceInjector>
+	-->
+</l10n:LocaleMap>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application 
+	xmlns:components="com.rmc.projects.robotlegstemplate.view.components.*"
+	xmlns:robotlegstemplate="com.rmc.projects.robotlegstemplate.*" 
+	xmlns:s="library://ns.adobe.com/flex/spark" 
+	xmlns:mx="library://ns.adobe.com/flex/mx" 
+	xmlns:fx="http://ns.adobe.com/mxml/2009" 
+	
+	width="600" 
+	height="700" 
+
+	creationComplete="onCreationComplete (event);"
+	
+	>
+	
+	<fx:Script>
+		<![CDATA[
+			
+			//--------------------------------------
+			//  Imports
+			//--------------------------------------
+			import mx.events.FlexEvent;
+			
+			//--------------------------------------
+			//  Properties
+			//--------------------------------------
+
+			//--------------------------------------
+			//  Methods
+			//--------------------------------------		
+			
+			//--------------------------------------
+			//  Events
+			//--------------------------------------	
+			/**
+			 * Event Handler: FlexEvent.CREATION_COMPLETE
+			 * 
+			 * @param aEvent The FlexEvent.
+			 * 
+			 * @return void
+			*/
+			protected function onCreationComplete (aEvent : FlexEvent):void
+			{
+				//INSTRUCTIONAL TRACE #1 OF 3
+				trace ("onCreationComplete()");
+			}
+			
+		]]>
+	</fx:Script>
+	
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<robotlegstemplate:RobotLegsTemplateContext contextView="{this}" />
+	</fx:Declarations>
+	
+	<!-- Import Styles -->
+	<fx:Style source="./styles/styles.css" /> 
+	
+	<!-- Do Layout Here -->
+	<s:layout>
+		<s:VerticalLayout 
+			paddingBottom	=	"10"
+			paddingLeft		=	"10"
+			paddingRight	=	"10"
+			paddingTop		=	"10"
+			horizontalAlign	=	"center"
+			gap				=	"20"
+			/>
+	</s:layout>
+	
+	<!-- Place visual elements here -->
+	<components:MainUI verticalCenter="middle" />	
+	
+</s:Application>
+

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<l10n:LocaleMap 	
+	
+	xmlns:factory="mx.core.*" 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:l10n="http://l10n.babelfx.org/" 
+	xmlns:metadata="org.osmf.metadata.*" 
+	
+	> 
+	<mx:Metadata>
+		[ResourceBundle("main")]
+	</mx:Metadata>
+	  
+	<mx:Script>
+		<![CDATA[
+			import com.rmc.projects.robotlegstemplate.flex451as3signalsbabelfx.view.components.MainUI;
+		]]>
+	</mx:Script>
+	<l10n:ResourceInjector  		bundleName="main" target="{MainUI}">
+		<l10n:ResourceSetter 	property="panel.title" key="mainUI.panel.title" type="string"  />
+		<l10n:ResourceSetter 	property="loadMessage_button.label" key="loadMessage_button.label" type="string"  />
+		<l10n:ResourceSetter 	property="loadMessage_button.toolTip" key="loadMessage_button.toolTip" type="string"  />
+		<l10n:ResourceSetter 	property="clearMessage_button.label" key="clearMessage_button.label" type="string"  />
+		<l10n:ResourceSetter 	property="clearMessage_button.toolTip" key="clearMessage_button.toolTip" type="string"  />
+	</l10n:ResourceInjector>
+	
+</l10n:LocaleMap>
