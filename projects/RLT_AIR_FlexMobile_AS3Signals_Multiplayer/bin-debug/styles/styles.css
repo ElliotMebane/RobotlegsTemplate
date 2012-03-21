@@ -1,0 +1,60 @@
+/* CSS file */
+@namespace s "library://ns.adobe.com/flex/spark";
+@namespace mx "library://ns.adobe.com/flex/mx";
+
+s|ViewNavigatorApplication {
+	fontFamily: Candara;
+}
+
+s|ActionBar
+{
+	titleAlign: left;
+}
+
+s|ActionBar #titleDisplay
+{
+	fontSize: 40;
+}
+
+s|TabbedViewNavigator #tabBar
+{
+	iconPlacement:left;
+	textDecoration:underline;
+}
+
+s|ActionBar.beveled s|Group#navigationGroup s|Button
+{
+	/* use the rounded button instead of the arrow button */
+	skinClass: ClassReference("spark.skins.mobile.BeveledActionButtonSkin");
+}
+
+
+/* Fonts. Only 1 is in use above.  Experiment with others */
+@font-face {
+	src:url("../assets_compiletime/fonts/Candara.ttf");
+	fontFamily: Candara;
+	embedAsCFF: false; /* false for mobile */
+}
+
+@font-face {
+	src:url("../assets_compiletime/fonts/Candara Bold.ttf");
+	fontFamily: Candara;
+	fontWeight: bold;
+	embedAsCFF: false; /* false for mobile */
+}
+
+@font-face {
+	src:url("../assets_compiletime/fonts/Candara Italic.ttf");
+	fontFamily: Candara;
+	fontStyle:italic;
+	embedAsCFF: false; /* false for mobile */
+}
+
+
+@font-face {
+	src:url("../assets_compiletime/fonts/Candara Bold Italic.ttf");
+	fontFamily: Candara;
+	fontWeight: bold;
+	fontStyle:italic;
+	embedAsCFF: false; /* false for mobile */
+}

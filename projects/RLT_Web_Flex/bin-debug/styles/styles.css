@@ -30,20 +30,20 @@ s|TextArea {
 
 /* Fonts. Only 1 is in use above.  Experiment with others */
 @font-face {
-	src:url("../assets/fonts/Candara.ttf");
+	src:url("../assets_compiletime/fonts/Candara.ttf");
 	fontFamily: Candara;
 	embedAsCFF: true;
 }
 
 @font-face {
-	src:url("../assets/fonts/Candara Bold.ttf");
+	src:url("../assets_compiletime/fonts/Candara Bold.ttf");
 	fontFamily: Candara;
 	font-weight: bold;
 	embedAsCFF: true;
 }
 
 @font-face {
-	src:url("../assets/fonts/Candara Italic.ttf");
+	src:url("../assets_compiletime/fonts/Candara Italic.ttf");
 	fontFamily: Candara;
 	font-style:italic;
 	embedAsCFF: true;
@@ -51,7 +51,7 @@ s|TextArea {
 
 
 @font-face {
-	src:url("../assets/fonts/Candara Bold Italic.ttf");
+	src:url("../assets_compiletime/fonts/Candara Bold Italic.ttf");
 	fontFamily: Candara;
 	font-weight: bold;
 	font-style:italic;
@@ -59,14 +59,14 @@ s|TextArea {
 }
 
 @font-face {
-	src:url("../assets/fonts/Franklin Gothic Medium.ttf");
+	src:url("../assets_compiletime/fonts/Franklin Gothic Medium.ttf");
 	fontFamily: FranklinGothicMedium;
 	embedAsCFF: true;
 	font-style:normal;
 }
 
 @font-face {
-	src:url("../assets/fonts/Franklin Gothic Medium Italic.ttf");
+	src:url("../assets_compiletime/fonts/Franklin Gothic Medium Italic.ttf");
 	fontFamily: FranklinGothicMedium;
 	embedAsCFF: true;
 	font-style:italic;
