@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:ViewNavigatorApplication 
-	
-	firstView="com.rmc.projects.multiplayertemplate.robotlegs.view.components.views.LobbyViewUI" 
-	xmlns:robotlegs="com.rmc.projects.multiplayertemplate.robotlegs.*" 
+<views:AbstractView
+	xmlns:views="com.rmc.projects.multiplayertemplate.robotlegs.view.components.views.*" 
 	xmlns:fx="http://ns.adobe.com/mxml/2009" 
 	xmlns:s="library://ns.adobe.com/flex/spark" 
-	
-	applicationDPI="320"
 	
 	creationComplete="_onCreationComplete(event)"
 	
 	>
-	
 	
 	<fx:Script>
 		<![CDATA[
@@ -45,17 +40,37 @@
 			//--------------------------------------
 			import mx.events.FlexEvent;
 			
+			import org.osflash.signals.natives.NativeSignal;
+			
 			//--------------------------------------
 			//  Properties
 			//--------------------------------------
+			//PUBLIC GETTER/SETTERS
 			
-			//--------------------------------------
-			//  Methods
-			//--------------------------------------		
+			//PUBLIC
 			
-			//--------------------------------------
-			//  Events
-			//--------------------------------------	
+			/**
+			 * Signal: When 'Clear' is Clicked
+			 * 
+			 */
+			public var clearMessageButtonClickNativeSignal : NativeSignal;
+			
+			
+			//PUBLIC CONST
+			
+			
+			//PRIVATE
+			
+			// --------------------------------------
+			// Methods
+			// --------------------------------------
+			// PUBLIC
+			
+			// PRIVATE
+			
+			// --------------------------------------
+			// Event Handlers
+			// --------------------------------------
 			/**
 			 * Handles the aEvent: <code>FlexEvent.CREATION_COMPLETE</code>.
 			 * 
@@ -64,19 +79,22 @@
 			 * @return void
 			 * 
 			 */
-			protected function _onCreationComplete (aEvent : FlexEvent):void
+			private function _onCreationComplete(aEvent : FlexEvent) : void
 			{
-				//INSTRUCTIONAL TRACE #1 OF 3
-				trace ("_onCreationComplete()");
+				clearMessageButtonClickNativeSignal = new NativeSignal 	(clearMessage_button, 	MouseEvent.CLICK, MouseEvent);	
 			}
 			
 		]]>
 	</fx:Script>
 	
-	
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
-		<robotlegs:MultiplayerContext contextView="{this}" />
 	</fx:Declarations>
 	
-</s:ViewNavigatorApplication>
+	<!-- Place any UI components here. -->	
+	<s:TextArea id = "textarea" 					width="100%" height="100" editable="false" selectable="false"	
+				skinClass="spark.skins.mobile.TextAreaSkin"
+				/>
+	<s:Button 	id = "clearMessage_button"  		width="100%"  />
+	
+</views:AbstractView>

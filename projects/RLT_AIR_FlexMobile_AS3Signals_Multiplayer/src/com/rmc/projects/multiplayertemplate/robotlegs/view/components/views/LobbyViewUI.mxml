@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<views:AbstractView
+	xmlns:views="com.rmc.projects.multiplayertemplate.robotlegs.view.components.views.*" 
+	xmlns:fx="http://ns.adobe.com/mxml/2009" 
+	xmlns:s="library://ns.adobe.com/flex/spark" 
+	
+	creationComplete="_onCreationComplete(event)"
+	
+	>
+	
+	<fx:Script>
+		<![CDATA[
+			import com.rmc.projects.multiplayertemplate.robotlegs.model.PhrasesModel;
+			
+			import mx.events.FlexEvent;
+			
+			import org.osflash.signals.natives.NativeSignal;
+			
+			//--------------------------------------
+			//  Properties
+			//--------------------------------------
+			//PUBLIC GETTER/SETTERS
+			
+			//PUBLIC
+			/**
+			 * Signal: When 'Connect' is Clicked
+			 * 
+			 */
+			public var connectMultiplayer_signal : NativeSignal;
+			
+			/**
+			 * Signal: When 'Disconnect' is Clicked
+			 * 
+			 */
+			public var disconnectMultiplayer_signal : NativeSignal;
+			
+			//PUBLIC CONST
+			
+			
+			//PRIVATE
+			
+			// --------------------------------------
+			// Methods
+			// --------------------------------------
+			// PUBLIC
+			
+			// PRIVATE
+			
+			// --------------------------------------
+			// Event Handlers
+			// --------------------------------------
+			/**
+			 * Handles the aEvent: <code>FlexEvent.CREATION_COMPLETE</code>.
+			 * 
+			 * @param aEvent <code>FlexEvent</code> The incoming aEvent payload.
+			 *  
+			 * @return void
+			 * 
+			 */
+			private function _onCreationComplete(aEvent : FlexEvent) : void
+			{
+				connectMultiplayer_signal  		= new NativeSignal	(connectMultiplayer_button, 	MouseEvent.CLICK, MouseEvent);	
+				disconnectMultiplayer_signal  	= new NativeSignal	(disconnectMultiplayer_button, 	MouseEvent.CLICK, MouseEvent);	
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<!-- Layout -->
+	
+	<!-- Place any UI components here. -->	
+	<s:Spacer height="100" />
+	<s:Button 	id = "connectMultiplayer_button"  		width="100%"  />
+	<s:Button 	id = "disconnectMultiplayer_button"  		width="100%"  />
+	
+</views:AbstractView>
