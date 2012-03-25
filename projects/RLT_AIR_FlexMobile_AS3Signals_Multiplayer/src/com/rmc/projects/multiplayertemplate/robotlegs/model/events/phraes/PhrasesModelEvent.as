@@ -28,7 +28,7 @@ package com.rmc.projects.multiplayertemplate.robotlegs.model.events.phraes
 	//--------------------------------------
 	//  Imports
 	//--------------------------------------
-	import com.rmc.projects.multiplayertemplate.robotlegs.model.PhrasesModel;
+	import com.rmc.projects.multiplayertemplate.robotlegs.model.phrases.PhrasesModel;
 	import com.rmc.projects.multiplayertemplate.robotlegs.model.vo.phrases.PhrasesVO;
 	
 	import flash.events.Event;

@@ -29,7 +29,7 @@ package com.rmc.projects.multiplayertemplate.robotlegs.view
 	//--------------------------------------
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.flexmobile.ViewNavigatorPopViewSignal;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.flexmobile.ViewNavigatorPushViewSignal;
-	import com.rmc.projects.multiplayertemplate.robotlegs.model.PhrasesModel;
+	import com.rmc.projects.multiplayertemplate.robotlegs.model.phrases.PhrasesModel;
 	import com.rmc.projects.multiplayertemplate.robotlegs.model.events.flexmobile.ViewNavigatorEvent;
 	import com.rmc.projects.multiplayertemplate.robotlegs.model.events.phraes.PhrasesModelEvent;
 	import com.rmc.projects.multiplayertemplate.robotlegs.model.vo.phrases.PhrasesVO;

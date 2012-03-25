@@ -28,10 +28,10 @@ package com.rmc.projects.multiplayertemplate.robotlegs.view
 	//  Imports
 	//--------------------------------------
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.ClearMessageModelSignal;
-	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.MultiplayerConnectSignal;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.server.MultiplayerServerSignal;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.phrases.LoadPhrasesModelSignal;
-	import com.rmc.projects.multiplayertemplate.robotlegs.model.MultiplayerModel;
-	import com.rmc.projects.multiplayertemplate.robotlegs.model.PhrasesModel;
+	import com.rmc.projects.multiplayertemplate.robotlegs.model.multiplayer.union.MultiplayerModel;
+	import com.rmc.projects.multiplayertemplate.robotlegs.model.phrases.PhrasesModel;
 	import com.rmc.projects.multiplayertemplate.robotlegs.model.events.phraes.PhrasesModelEvent;
 	import com.rmc.projects.multiplayertemplate.robotlegs.model.vo.phrases.PhrasesVO;
 	import com.rmc.projects.multiplayertemplate.robotlegs.view.components.views.ClearMessageViewUI;
@@ -98,13 +98,7 @@ package com.rmc.projects.multiplayertemplate.robotlegs.view
 		 */	
 		[Inject]
 		public var phrasesModel : PhrasesModel;
-		
-		/**
-		 * Reference: <code>MessageModel</code>
-		 * 
-		 */	
-		[Inject]
-		public var messageModel : MultiplayerModel;
+
 		
 		
 		//--------------------------------------
@@ -136,7 +130,6 @@ package com.rmc.projects.multiplayertemplate.robotlegs.view
 			clearMessageViewUI.clearMessageButtonClickNativeSignal.add (_onClearMessageButtonClick);
 			
 			//	Context Listeners
-			messageModel.changedMessageModelSignal.add (_onChangedMessageModelSignal);
 			phrasesModel.changedPhrasesModelSignal.add (_onPhrasesModelChanged);
 			
 			//	Clear Layout
@@ -175,7 +168,7 @@ package com.rmc.projects.multiplayertemplate.robotlegs.view
 		{
 			
 			//GRAB VALUE
-			aMessage_str = messageModel.message;
+			//aMessage_str = messageModel.message;
 			
 			//SET MESSAGE
 			if (aMessage_str == null || aMessage_str == "") {

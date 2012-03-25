@@ -28,10 +28,10 @@ package com.rmc.projects.multiplayertemplate.robotlegs.controller
 	//--------------------------------------
 	//  Imports
 	//--------------------------------------
-	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.MultiplayerConnectSignal;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.server.MultiplayerServerSignal;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.phrases.LoadPhrasesModelSignal;
-	import com.rmc.projects.multiplayertemplate.robotlegs.model.MultiplayerModel;
-	import com.rmc.projects.multiplayertemplate.robotlegs.model.PhrasesModel;
+	import com.rmc.projects.multiplayertemplate.robotlegs.model.multiplayer.union.MultiplayerModel;
+	import com.rmc.projects.multiplayertemplate.robotlegs.model.phrases.PhrasesModel;
 	import com.rmc.projects.multiplayertemplate.robotlegs.model.events.phraes.PhrasesModelEvent;
 	import com.rmc.projects.multiplayertemplate.robotlegs.services.ILoadService;
 	import com.rmc.projects.multiplayertemplate.robotlegs.services.phrases.PhrasesLoadService;

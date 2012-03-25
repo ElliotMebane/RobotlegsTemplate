@@ -28,7 +28,7 @@ package com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.flexmo
 	//--------------------------------------
 	//  Imports
 	//--------------------------------------
-	import com.rmc.projects.multiplayertemplate.robotlegs.model.events.multiplayer.MultiplayerConnectEvent;
+	import com.rmc.projects.multiplayertemplate.robotlegs.model.events.multiplayer.MultiplayerMessageEvent;
 	import com.rmc.projects.multiplayertemplate.robotlegs.model.events.phraes.PhrasesModelEvent;
 	
 	import org.osflash.signals.Signal;
@@ -76,7 +76,7 @@ package com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.flexmo
 		public function ViewNavigatorPopViewSignal ()
 		{
 			//SUPER
-			super (MultiplayerConnectEvent) 
+			super (MultiplayerMessageEvent) 
 			
 			//EVENTS
 			

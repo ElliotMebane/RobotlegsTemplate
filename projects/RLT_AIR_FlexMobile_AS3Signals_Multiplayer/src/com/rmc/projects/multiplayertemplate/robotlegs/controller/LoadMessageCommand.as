@@ -30,7 +30,7 @@ package com.rmc.projects.multiplayertemplate.robotlegs.controller
 	//--------------------------------------
 	import com.rmc.projects.multiplayertemplate.managers.AssetManager;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.flexmobile.ViewNavigatorPushViewSignal;
-	import com.rmc.projects.multiplayertemplate.robotlegs.model.MultiplayerModel;
+	import com.rmc.projects.multiplayertemplate.robotlegs.model.multiplayer.union.MultiplayerModel;
 	import com.rmc.projects.robotlegstemplate.robotlegs.model.events.flexmobile.MultiplayerConnectEvent;
 	import com.rmc.projects.multiplayertemplate.robotlegs.services.ILoadService;
 	import com.rmc.projects.multiplayertemplate.robotlegs.view.components.views.ClearMessageViewUI;

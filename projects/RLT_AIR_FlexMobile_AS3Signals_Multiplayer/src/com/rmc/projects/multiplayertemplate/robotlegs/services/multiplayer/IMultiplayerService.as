@@ -24,6 +24,17 @@
 //Marks the right margin of code *******************************************************************
 package com.rmc.projects.multiplayertemplate.robotlegs.services.multiplayer
 {
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.commands.multiplayer.MultiplayerServerCommand;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.message.MultiplayerMessageReceivedSignal;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.room.MultiplayerRoomJoinedSignal;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.room.MultiplayerRoomOccupantCountChangedSignal;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.server.MultiplayerConnectedSignal;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.server.MultiplayerDisconnectedSignal;
+	import com.rmc.projects.multiplayertemplate.robotlegs.model.multiplayer.union.MultiplayerModel;
+	import com.rmc.projects.multiplayertemplate.robotlegs.model.vo.multiplayer.MessageVO;
+	
+	import net.user1.reactor.Room;
+	import net.user1.reactor.filters.IFilter;
 
 	//--------------------------------------
 	//  Imports
@@ -47,17 +58,23 @@ package com.rmc.projects.multiplayertemplate.robotlegs.services.multiplayer
 		//  Properties
 		//--------------------------------------
 		//PUBLIC GETTER/SETTERS
-		//function get sample() 						 :  String;
-		//function set sample(aValue  :  String) 		 :  void;
 		
+		//	SIGNALS
+		function get multiplayerModel() 					:  MultiplayerModel
+		function get multiplayerConnectedSignal() 			:  MultiplayerConnectedSignal;
+		function get multiplayerDisconnectedSignal() 		:  MultiplayerDisconnectedSignal;
+		function get multiplayerRoomJoinedSignal() 			:  MultiplayerRoomJoinedSignal;
+		function get multiplayerMessageReceivedSignal() 	:  MultiplayerMessageReceivedSignal;
+		function get multiplayerRoomOccupantCountChangedSignal() 	:  MultiplayerRoomOccupantCountChangedSignal;
 		
 		//--------------------------------------
 		//  Methods
 		//--------------------------------------				
 		function connect(aServer_str:String, aPort_int:uint):void;
 		function disconnect():void;
-		//function sendMessage(aArgument_chatmessage:ChatMessageVO):void;
-		//function setUserName(aArgument_str:String):void;
-		
+		function sendMessage(aChatMessageVO : MessageVO):void
+		function createRoomAndJoinRoom(aRoomName_str : String, aUserName_str : String): Room;
+		function leaveCurrentRoom():void;
+				
 	}
 }

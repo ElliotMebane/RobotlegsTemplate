@@ -32,20 +32,24 @@ package com.rmc.projects.multiplayertemplate.robotlegs
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.LoadMessageCommand;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.ShutdownCommand;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.StartupCommand;
-	import com.rmc.projects.multiplayertemplate.robotlegs.controller.commands.multiplayer.MultiplayerConnectCommand;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.commands.multiplayer.MultiplayerMessageCommand;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.commands.multiplayer.MultiplayerRoomCommand;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.commands.multiplayer.MultiplayerServerCommand;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.commands.phrases.LoadPhrasesCommand;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.ClearMessageModelSignal;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.flexmobile.ViewNavigatorPopViewSignal;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.flexmobile.ViewNavigatorPushViewSignal;
-	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.MultiplayerConnectSignal;
-	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.MultiplayerConnectedSignal;
-	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.MultiplayerDisconnectedSignal;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.message.MultiplayerMessageSignal;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.room.MultiplayerRoomSignal;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.server.MultiplayerServerSignal;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.server.MultiplayerConnectedSignal;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.server.MultiplayerDisconnectedSignal;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.phrases.LoadPhrasesModelSignal;
-	import com.rmc.projects.multiplayertemplate.robotlegs.model.MultiplayerModel;
-	import com.rmc.projects.multiplayertemplate.robotlegs.model.PhrasesModel;
+	import com.rmc.projects.multiplayertemplate.robotlegs.model.multiplayer.union.MultiplayerModel;
+	import com.rmc.projects.multiplayertemplate.robotlegs.model.phrases.PhrasesModel;
 	import com.rmc.projects.multiplayertemplate.robotlegs.services.ILoadService;
 	import com.rmc.projects.multiplayertemplate.robotlegs.services.multiplayer.IMultiplayerService;
-	import com.rmc.projects.multiplayertemplate.robotlegs.services.multiplayer.MultiplayerService;
+	import com.rmc.projects.multiplayertemplate.robotlegs.services.multiplayer.union.UnionMultiplayerService;
 	import com.rmc.projects.multiplayertemplate.robotlegs.services.phrases.PhrasesLoadService;
 	import com.rmc.projects.multiplayertemplate.robotlegs.view.ClearMessageViewUIMediator;
 	import com.rmc.projects.multiplayertemplate.robotlegs.view.LobbyViewUIMediator;
@@ -172,9 +176,11 @@ package com.rmc.projects.multiplayertemplate.robotlegs
 			
 			//SIGNALS SETUP WITHIN THIS CONTEXT - 2 OF 2: SIGNALS THAT ARE MAPPED TO COMMANDS
 			//a. REQUESTS
-			signalCommandMap.mapSignalClass(LoadPhrasesModelSignal,   	LoadPhrasesCommand);
+			signalCommandMap.mapSignalClass(LoadPhrasesModelSignal,   		LoadPhrasesCommand);
 			//
-			signalCommandMap.mapSignalClass(MultiplayerConnectSignal,   MultiplayerConnectCommand);
+			signalCommandMap.mapSignalClass(MultiplayerServerSignal,   	MultiplayerServerCommand);
+			signalCommandMap.mapSignalClass(MultiplayerMessageSignal,   	MultiplayerMessageCommand);
+			signalCommandMap.mapSignalClass(MultiplayerRoomSignal, 			MultiplayerRoomCommand);
 			//
 			commandMap.mapEvent 		(ContextEvent.STARTUP,  StartupCommand);
 			commandMap.mapEvent 		(ContextEvent.SHUTDOWN, ShutdownCommand);
@@ -190,7 +196,10 @@ package com.rmc.projects.multiplayertemplate.robotlegs
 		{	
 			
 			injector.mapSingletonOf (ILoadService, 			PhrasesLoadService, "PhrasesLoadService");
-			injector.mapSingletonOf (IMultiplayerService, 	MultiplayerService, "MultiplayerService");
+			
+			//	UNION-SPECIFIC CONCRETE CLASS USED HERE - EVERWHERE ELSE WE REFERENCE IT BY THE TYPE 'IMultiplayerService', 
+			//		to ease porting this code to non-Union Multiplayer Servers
+			injector.mapSingletonOf (IMultiplayerService, 	UnionMultiplayerService, "MultiplayerService");
 			
 		}
 		

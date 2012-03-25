@@ -28,8 +28,8 @@ package com.rmc.projects.multiplayertemplate.robotlegs.controller
 	//--------------------------------------
 	//  Imports
 	//--------------------------------------
-	import com.rmc.projects.multiplayertemplate.robotlegs.model.MultiplayerModel;
-	import com.rmc.projects.multiplayertemplate.robotlegs.model.PhrasesModel;
+	import com.rmc.projects.multiplayertemplate.robotlegs.model.multiplayer.union.MultiplayerModel;
+	import com.rmc.projects.multiplayertemplate.robotlegs.model.phrases.PhrasesModel;
 	import com.rmc.projects.multiplayertemplate.robotlegs.services.ILoadService;
 	import com.rmc.projects.multiplayertemplate.robotlegs.services.phrases.PhrasesLoadService;
 	import com.rmc.projects.multiplayertemplate.robotlegs.view.LobbyViewUIMediator;

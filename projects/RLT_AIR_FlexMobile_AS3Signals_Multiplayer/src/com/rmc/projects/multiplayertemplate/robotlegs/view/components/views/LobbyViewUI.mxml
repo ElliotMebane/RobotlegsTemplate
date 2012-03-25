@@ -5,15 +5,17 @@
 	xmlns:s="library://ns.adobe.com/flex/spark" 
 	
 	creationComplete="_onCreationComplete(event)"
+	title="{phrasesVO.applicationTitle_str}"
 	
 	>
 	
 	<fx:Script>
 		<![CDATA[
-			import com.rmc.projects.multiplayertemplate.robotlegs.model.PhrasesModel;
+			import com.rmc.projects.multiplayertemplate.robotlegs.model.phrases.PhrasesModel;
 			
 			import mx.events.FlexEvent;
 			
+			import org.osflash.signals.Signal;
 			import org.osflash.signals.natives.NativeSignal;
 			
 			//--------------------------------------
@@ -33,6 +35,42 @@
 			 * 
 			 */
 			public var disconnectMultiplayer_signal : NativeSignal;
+			
+			/**
+			 * Signal: When 'Send' is Clicked
+			 * 
+			 */
+			public var sendMessage_signal : Signal;
+			
+			/**
+			 * Describe this member.
+			 * 
+			 */
+			[Bindable]
+			public function get isConnected() 					: Boolean 	{ return _isConnected_boolean; }
+			public function set isConnected(aValue : Boolean) 	: void 		{ _isConnected_boolean = aValue; }
+			private var _isConnected_boolean : Boolean;
+			
+			/**
+			 * Describe this member.
+			 * 
+			 */
+			[Bindable]
+			public function get statusMessage() 				: String 	{ return _statusMessage_str; }
+			public function set statusMessage(aValue : String) 	: void 		{ _statusMessage_str = aValue; }
+			private var _statusMessage_str : String;
+			
+			
+			/**
+			 * Describe this member.
+			 *  
+			 */		
+			[Bindable]
+			public function get isJoined () 					: Boolean 	{ return _isJoined_boolean; }
+			public function set isJoined (aValue : Boolean) 	: void 		{ _isJoined_boolean = aValue; }
+			private var _isJoined_boolean : Boolean;
+			
+			
 			
 			//PUBLIC CONST
 			
@@ -61,6 +99,21 @@
 			{
 				connectMultiplayer_signal  		= new NativeSignal	(connectMultiplayer_button, 	MouseEvent.CLICK, MouseEvent);	
 				disconnectMultiplayer_signal  	= new NativeSignal	(disconnectMultiplayer_button, 	MouseEvent.CLICK, MouseEvent);	
+				//
+				sendMessage_signal  			= new Signal(); //two events may trigger this, see event handlers below
+			}
+			
+			/**
+			 * Handles the aEvent: <code>MouseEvent.CLICK</code> or <code>Enter Was Clicked</code>
+			 * 
+			 * @param aEvent <code>FlexEvent</code> The incoming aEvent payload.
+			 *  
+			 * @return void
+			 * 
+			 */
+			protected function _onSendMessageButtonClick(event:Event):void
+			{
+				sendMessage_signal.dispatch();
 			}
 			
 		]]>
@@ -73,8 +126,56 @@
 	<!-- Layout -->
 	
 	<!-- Place any UI components here. -->	
-	<s:Spacer height="100" />
-	<s:Button 	id = "connectMultiplayer_button"  		width="100%"  />
-	<s:Button 	id = "disconnectMultiplayer_button"  		width="100%"  />
+	<s:HGroup width="100%" verticalAlign="middle" >
+		<s:Label 											width="200"  text="{phrasesVO.statusLabelText_str}" enabled="{isConnected}" />
+		<s:TextArea id = "status_textarea"  				width="400" text="{statusMessage}"  />
+		<s:Label 											width="200"  text="{phrasesVO.instructionsLabelText_str}" enabled="{isConnected}" />
+		<s:TextArea  										width="100%" text="{phrasesVO.instructionsBodyText_str}"  />
+	</s:HGroup>	
+	<s:HGroup width="100%" verticalAlign="middle" >
+		<s:Label width="200" text="{phrasesVO.serverLabelText_str}" />
+		<s:TextInput id = "serverURL_textinput" width="100%" text="" enabled="{!isConnected}" selectable="false"  />
+		<s:TextInput id = "serverPort_textinput" width="100%" text="" enabled="{!isConnected}"  selectable="false"  />
+		<s:TextInput id = "userName_textinput" width="100%" text="" enabled="{!isConnected}"  selectable="false"  />
+		<s:Button 	id = "connectMultiplayer_button"  		width="100%" label="{phrasesVO.connectButtonLabel_str}" enabled="{!isConnected}" />
+		<s:Button 	id = "disconnectMultiplayer_button"  label="{phrasesVO.disconnectButtonLabel_str}" enabled="{isConnected}"/>
+		
+	</s:HGroup>
+	<s:HGroup width="100%" verticalAlign="middle" >
+		<s:Label width="200" text="{phrasesVO.roomLabelText_str}" />
+		<s:TextInput id = "roomName_textinput" width="100%" text="" enabled="{(isConnected)  &amp;&amp; (!isJoined)}"  selectable="false" />
+		<s:Button 	 id = "joinRoom_button" width="200" label="{phrasesVO.joinRoomButtonLabel_str}" enabled="{((isConnected) &amp;&amp; (!isJoined) &amp;&amp; (roomName_textinput.text.length > 0))}" />
+		<s:Button 	 id = "leaveRoom_button" width="200" label="{phrasesVO.leaveRoomButtonLabel_str}" enabled="{((isConnected) &amp;&amp; (isJoined) )}" />
+	</s:HGroup>
+	<s:HGroup width="100%" verticalAlign="middle" >
+		<s:Label width="200" text="{phrasesVO.messageLabelText_str}" />
+		<s:TextInput id = "message_textinput" width="100%" text="" enabled="{isConnected}"  selectable="false"
+					 
+					 
+					 enter="_onSendMessageButtonClick(event)" 
+					 />
+		
+		<s:Button 	 id = "sendMessage_button" width="200" label="{phrasesVO.messageButtonLabel_str}" 
+					 enabled="{((isConnected) &amp;&amp; (message_textinput.text.length > 0))}" 
+					 
+					 
+					 click="_onSendMessageButtonClick(event)"
+					 />
+	</s:HGroup>
+	
+	
+	<s:HGroup width="100%" height="100%">
+		<s:VGroup width="50%" height="100%">
+			<s:Label 											width="100%" text="{phrasesVO.usersLabelText_str}"  />
+			<s:List id = "users_list" labelField="name" width="100%" height="100%" />
+		</s:VGroup>
+		<s:VGroup width="50%" height="100%">
+			<s:Label 											width="100%" text="{phrasesVO.outputLabelText_str}"  />
+			<s:TextArea id = "output_textarea"  				width="100%" text="" height="100%"  selectable="true"
+						skinClass="spark.skins.mobile.TextAreaSkin"
+						/>
+		</s:VGroup>
+	</s:HGroup>
+	
 	
 </views:AbstractView>

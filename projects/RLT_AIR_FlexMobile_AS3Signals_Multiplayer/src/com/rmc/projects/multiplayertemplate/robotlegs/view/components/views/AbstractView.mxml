@@ -26,7 +26,7 @@
 			 * Stores all the translation info. Nice and bindable
 			 * 
 			 */
-			[Binable]
+			[Bindable]
 			public function get phrasesVO() 						: PhrasesVO	 		{ return _phrasesVO; }
 			public function set phrasesVO(aValue : PhrasesVO) 		: void 			{ _phrasesVO = aValue; }
 			private var _phrasesVO : PhrasesVO;

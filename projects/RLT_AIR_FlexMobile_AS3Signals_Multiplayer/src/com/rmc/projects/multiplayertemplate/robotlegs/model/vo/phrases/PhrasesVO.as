@@ -38,6 +38,7 @@ package com.rmc.projects.multiplayertemplate.robotlegs.model.vo.phrases
 	 * <p>Holds the data: For UI display </p>
 	 * 
 	 */
+	[Bindable]
 	public class PhrasesVO	
 	{		
 		
@@ -52,9 +53,23 @@ package com.rmc.projects.multiplayertemplate.robotlegs.model.vo.phrases
 		 * 
 		 */		
 		public var applicationTitle_str : String;
+		public var instructionsLabelText_str : String;
+		public var instructionsBodyText_str : String;
+		public var statusLabelText_str : String;
 		public var connectButtonLabel_str : String;
 		public var disconnectButtonLabel_str : String;
+		//
+		public var serverLabelText_str : String;
+		public var roomLabelText_str : String;
+		public var joinRoomButtonLabel_str : String;
+		public var leaveRoomButtonLabel_str : String;
+		//
+		public var messageLabelText_str : String;
+		public var messageButtonLabel_str : String;
+		public var usersLabelText_str : String;
+		public var outputLabelText_str : String;
 		
+	
 		//--------------------------------------
 		//  Constructor
 		//--------------------------------------
