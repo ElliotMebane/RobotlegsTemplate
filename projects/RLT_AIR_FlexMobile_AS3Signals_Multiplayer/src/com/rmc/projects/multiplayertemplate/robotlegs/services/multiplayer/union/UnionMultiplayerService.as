@@ -29,8 +29,12 @@ package com.rmc.projects.multiplayertemplate.robotlegs.services.multiplayer.unio
 	// Imports
 	// --------------------------------------
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.message.MultiplayerMessageReceivedSignal;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.room.MultiplayerRoomAttributeUpdatedSignal;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.room.MultiplayerRoomJoinedSignal;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.room.MultiplayerRoomLeftSignal;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.room.MultiplayerRoomOccupantAddedSignal;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.room.MultiplayerRoomOccupantCountChangedSignal;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.room.MultiplayerRoomOccupantRemovedSignal;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.server.MultiplayerConnectedSignal;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.server.MultiplayerDisconnectedSignal;
 	import com.rmc.projects.multiplayertemplate.robotlegs.model.events.multiplayer.MultiplayerMessageEvent;
@@ -39,6 +43,7 @@ package com.rmc.projects.multiplayertemplate.robotlegs.services.multiplayer.unio
 	import com.rmc.projects.multiplayertemplate.robotlegs.model.vo.multiplayer.UserVO;
 	import com.rmc.projects.multiplayertemplate.robotlegs.services.multiplayer.IMultiplayerService;
 	
+	import net.user1.reactor.AttributeEvent;
 	import net.user1.reactor.Client;
 	import net.user1.reactor.IClient;
 	import net.user1.reactor.ReactorEvent;
@@ -95,16 +100,49 @@ package com.rmc.projects.multiplayertemplate.robotlegs.services.multiplayer.unio
 		 * Signal: 
 		 * 
 		 */
-		private var _multiplayerRoomOccupantCountChangedSignal : MultiplayerRoomOccupantCountChangedSignal;
-		public function get multiplayerRoomOccupantCountChangedSignal () :MultiplayerRoomOccupantCountChangedSignal { return _multiplayerRoomOccupantCountChangedSignal; }
+		private var _multiplayerRoomLeftSignal : MultiplayerRoomLeftSignal;
+		public function get multiplayerRoomLeftSignal () : MultiplayerRoomLeftSignal { return _multiplayerRoomLeftSignal; }
 		
 		
 		/**
 		 * Signal: 
 		 * 
 		 */
-		private var _multiplayerChatMessageRecievedSignal : MultiplayerMessageReceivedSignal;
-		public function get multiplayerMessageReceivedSignal () :MultiplayerMessageReceivedSignal { return _multiplayerChatMessageRecievedSignal; }
+		private var _multiplayerRoomOccupantCountChangedSignal : MultiplayerRoomOccupantCountChangedSignal;
+		public function get multiplayerRoomOccupantCountChangedSignal () :MultiplayerRoomOccupantCountChangedSignal { return _multiplayerRoomOccupantCountChangedSignal; }
+		
+
+		/**
+		 * Signal: 
+		 * 
+		 */
+		private var _multiplayerRoomOccupantAddedSignal : MultiplayerRoomOccupantAddedSignal;
+		public function get multiplayerRoomOccupantAddedSignal () :MultiplayerRoomOccupantAddedSignal { return _multiplayerRoomOccupantAddedSignal; }
+		
+		
+		/**
+		 * Signal: 
+		 * 
+		 */
+		private var _multiplayerRoomOccupantRemovedSignal : MultiplayerRoomOccupantRemovedSignal;
+		public function get multiplayerRoomOccupantRemovedSignal () :MultiplayerRoomOccupantRemovedSignal { return _multiplayerRoomOccupantRemovedSignal; }
+		
+		
+		
+		/**
+		 * Signal: 
+		 * 
+		 */
+		private var _multiplayerRoomAttributeUpdatedSignal : MultiplayerRoomAttributeUpdatedSignal;
+		public function get multiplayerRoomAttributeUpdatedSignal () :MultiplayerRoomAttributeUpdatedSignal { return _multiplayerRoomAttributeUpdatedSignal; }
+		
+		
+		/**
+		 * Signal: 
+		 * 
+		 */
+		private var _multiplayerMessageReceivedSignal : MultiplayerMessageReceivedSignal;
+		public function get multiplayerMessageReceivedSignal () :MultiplayerMessageReceivedSignal { return _multiplayerMessageReceivedSignal; }
 		
 		//PUBLIC
 		/**
@@ -143,8 +181,12 @@ package com.rmc.projects.multiplayertemplate.robotlegs.services.multiplayer.unio
 			_multiplayerConnectedSignal 				= new MultiplayerConnectedSignal ();
 			_multiplayerDisconnectedSignal 				= new MultiplayerDisconnectedSignal ();
 			_multiplayerRoomJoinedSignal				= new MultiplayerRoomJoinedSignal ();
-			_multiplayerChatMessageRecievedSignal		= new MultiplayerMessageReceivedSignal ();
+			_multiplayerRoomLeftSignal					= new MultiplayerRoomLeftSignal ();
+			_multiplayerMessageReceivedSignal			= new MultiplayerMessageReceivedSignal ();
 			_multiplayerRoomOccupantCountChangedSignal	= new MultiplayerRoomOccupantCountChangedSignal ();
+			_multiplayerRoomOccupantAddedSignal			= new MultiplayerRoomOccupantAddedSignal ();
+			_multiplayerRoomOccupantRemovedSignal		= new MultiplayerRoomOccupantRemovedSignal ();
+			_multiplayerRoomAttributeUpdatedSignal		= new MultiplayerRoomAttributeUpdatedSignal ();
 			
 			// EVENTS
 			
@@ -202,7 +244,6 @@ package com.rmc.projects.multiplayertemplate.robotlegs.services.multiplayer.unio
 		 */	
 		public function disconnect():void
 		{
-			//multiplayerModel.currentRoom.leave();
 			multiplayerModel.API.disconnect();
 		}
 
@@ -247,7 +288,7 @@ package com.rmc.projects.multiplayertemplate.robotlegs.services.multiplayer.unio
 		 * @return Room
 		 * 
 		 */
-		public function createRoomAndJoinRoom(aRoomName_str : String, aLastRequestedUserName_str : String): Room
+		public function createRoomAndJoinRoom(aRoomName_str : String, aLastRequestedUserName_str : String): void
 		{ 
 			
 			//STORE THE NAME WE WANT TO USE FOR OUR USERNAME. IT WILL BE USED INTERNALLY LATER.
@@ -259,13 +300,14 @@ package com.rmc.projects.multiplayertemplate.robotlegs.services.multiplayer.unio
 			if (multiplayerModel.currentRoom == null) {
 				multiplayerModel.currentRoom = multiplayerModel.API.getRoomManager().createRoom(aRoomName_str);
 				multiplayerModel.currentRoom.addEventListener(RoomEvent.JOIN, 					_onRoomJoined);
+				multiplayerModel.currentRoom.addEventListener(RoomEvent.LEAVE, 					_onRoomLeft);
 				multiplayerModel.currentRoom.addEventListener(RoomEvent.OCCUPANT_COUNT, 		_onRoomOccupantCountChanged);
-				multiplayerModel.currentRoom.addMessageListener(MessageVO.MESSAGE_TYPE, 		_onChatMessageReceived );
+				multiplayerModel.currentRoom.addEventListener(AttributeEvent.UPDATE, 			_onRoomAttributeUpdated);
+				multiplayerModel.currentRoom.addMessageListener(MessageVO.MESSAGE_TYPE, 		_onMessageReceived );
 				multiplayerModel.currentRoom.join();
 			} else {
 				throw new Error ("We should not have a room yet. Did we remember to destroy the old one?");
 			}
-			return multiplayerModel.currentRoom;
 			
 		}
 		
@@ -279,9 +321,8 @@ package com.rmc.projects.multiplayertemplate.robotlegs.services.multiplayer.unio
 		 */
 		public function leaveCurrentRoom():void
 		{ 
-			multiplayerModel.currentRoom.removeEventListener(RoomEvent.JOIN, _onRoomJoined);
-			multiplayerModel.currentRoom.removeEventListener(MessageVO.MESSAGE_TYPE, _onChatMessageReceived );
 			multiplayerModel.currentRoom.leave();	
+
 		}
 		
 		
@@ -300,7 +341,7 @@ package com.rmc.projects.multiplayertemplate.robotlegs.services.multiplayer.unio
 			if (multiplayerModel.me) {
 				aChatMessageVO.fromUsername = multiplayerModel.me.name;
 			} else {
-				aChatMessageVO.fromUsername = "{UnknownUser}";
+				aChatMessageVO.fromUsername = "{Unknown User}";
 			}
 			multiplayerModel.currentRoom.sendMessage(MessageVO.MESSAGE_TYPE, true, null, aChatMessageVO.message);
 		}
@@ -323,7 +364,7 @@ package com.rmc.projects.multiplayertemplate.robotlegs.services.multiplayer.unio
 		 */
 		protected function _onReady(aEvent:ReactorEvent):void
 		{ 
-			multiplayerConnectedSignal.dispatch();
+			_multiplayerConnectedSignal.dispatch(aEvent);
 			
 		}
 
@@ -338,23 +379,9 @@ package com.rmc.projects.multiplayertemplate.robotlegs.services.multiplayer.unio
 		 */
 		protected function _onClose(aEvent:ReactorEvent):void
 		{ 
-			multiplayerDisconnectedSignal.dispatch();
+			_multiplayerDisconnectedSignal.dispatch(aEvent);
 			
 		}
-		
-		/**
-		 * Handles the Event: <code>RoomEvent.JOIN</code>.
-		 * 
-		 * @param aEvent <code>RoomEvent</code> The incoming aEvent payload.
-		 *  
-		 * @return void
-		 * 
-		 */
-		protected function _onRoomJoin(aEvent:RoomEvent):void
-		{
-			multiplayerRoomJoinedSignal.dispatch();
-		}
-		
 		
 		/**
 		 * Handles the Event: <code>RoomEvent.JOIN</code>.
@@ -369,7 +396,37 @@ package com.rmc.projects.multiplayertemplate.robotlegs.services.multiplayer.unio
 			//
 			_setMultiplayerModelDataForUsers (multiplayerModel.currentRoom.getOccupants());
 			//
-			multiplayerRoomJoinedSignal.dispatch();
+			_multiplayerRoomJoinedSignal.dispatch(aEvent);
+			
+		}
+		
+		
+		/**
+		 * Handles the Event: <code>RoomEvent.LEAVE</code>.
+		 * 
+		 * @param aEvent <code>RoomEvent</code> The incoming aEvent payload.
+		 *  
+		 * @return void
+		 * 
+		 */
+		protected function _onRoomLeft(aEvent : RoomEvent):void
+		{ 
+			var roomWeJustLeft : Room = (aEvent.target as Room);
+			_multiplayerRoomLeftSignal.dispatch(aEvent);
+			roomWeJustLeft.removeEventListener(RoomEvent.JOIN, 				_onRoomJoined);
+			roomWeJustLeft.removeEventListener(RoomEvent.LEAVE, 				_onRoomLeft);
+			//
+			roomWeJustLeft.removeEventListener(RoomEvent.ADD_OCCUPANT, 		_onRoomOccupantAdded);
+			roomWeJustLeft.removeEventListener(RoomEvent.REMOVE_OCCUPANT, 	_onRoomOccupantRemoved);
+			roomWeJustLeft.removeEventListener(RoomEvent.OCCUPANT_COUNT, 		_onRoomOccupantCountChanged);
+			//
+			//
+			roomWeJustLeft.removeEventListener(AttributeEvent.UPDATE, 		_onRoomAttributeUpdated);
+			roomWeJustLeft.removeMessageListener(MessageVO.MESSAGE_TYPE, 		_onMessageReceived );
+			//
+			multiplayerModel.currentRoom = null;
+			//
+			multiplayerRoomLeftSignal.dispatch(aEvent);
 			
 		}
 		
@@ -387,9 +444,59 @@ package com.rmc.projects.multiplayertemplate.robotlegs.services.multiplayer.unio
 			//
 			_setMultiplayerModelDataForUsers (multiplayerModel.currentRoom.getOccupants());
 			//
-			_multiplayerRoomOccupantCountChangedSignal.dispatch();
+			_multiplayerRoomOccupantCountChangedSignal.dispatch(aEvent);
 			
 		}
+		
+		/**
+		 * Handles the Event: <code>RoomEvent.ADD_OCCUPANT</code>.
+		 * 
+		 * @param aEvent <code>RoomEvent</code> The incoming aEvent payload.
+		 *  
+		 * @return void
+		 * 
+		 */
+		protected function _onRoomOccupantAdded(aEvent : RoomEvent):void
+		{ 
+			//
+			_setMultiplayerModelDataForUsers (multiplayerModel.currentRoom.getOccupants());
+			//
+			_multiplayerRoomOccupantAddedSignal.dispatch(aEvent);
+			
+		}
+		
+		/**
+		 * Handles the Event: <code>RoomEvent.REMOVE_OCCUPANT</code>.
+		 * 
+		 * @param aEvent <code>RoomEvent</code> The incoming aEvent payload.
+		 *  
+		 * @return void
+		 * 
+		 */
+		protected function _onRoomOccupantRemoved(aEvent : RoomEvent):void
+		{ 
+			//
+			_setMultiplayerModelDataForUsers (multiplayerModel.currentRoom.getOccupants());
+			//
+			_multiplayerRoomOccupantRemovedSignal.dispatch(aEvent);
+			
+		}
+		
+		/**
+		 * Handles the Event: <code>AttributeEvent.UPDATE</code>.
+		 * 
+		 * @param aEvent <code>AttributeEvent</code> The incoming aEvent payload.
+		 *  
+		 * @return void
+		 * 
+		 */
+		protected function _onRoomAttributeUpdated(aEvent : AttributeEvent):void
+		{ 
+			//
+			_multiplayerRoomAttributeUpdatedSignal.dispatch(aEvent);
+			
+		}
+		
 		
 		/**
 		 * Handles the Event: <code>RoomEvent.                </code>.
@@ -399,11 +506,11 @@ package com.rmc.projects.multiplayertemplate.robotlegs.services.multiplayer.unio
 		 * @return void
 		 * 
 		 */
-		protected function _onChatMessageReceived(aFrom_iclient: IClient, aMessage_str : String):void
+		protected function _onMessageReceived(aFrom_iclient: IClient, aMessage_str : String):void
 		{ 
 			var chatMessageVO:MessageVO = new MessageVO(aMessage_str);
 			chatMessageVO.fromUsername = aFrom_iclient.getAttribute(UserVO.USER_NAME_ATTRIBUTE_NAME);
-			multiplayerMessageReceivedSignal.dispatch(new MultiplayerMessageEvent (MultiplayerMessageEvent.RECEIVED, chatMessageVO) );
+			_multiplayerMessageReceivedSignal.dispatch(new MultiplayerMessageEvent (MultiplayerMessageEvent.RECEIVED, chatMessageVO) );
 			
 		}
 		

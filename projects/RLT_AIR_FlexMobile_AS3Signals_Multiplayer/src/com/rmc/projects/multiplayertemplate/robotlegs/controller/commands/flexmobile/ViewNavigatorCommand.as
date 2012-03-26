@@ -22,80 +22,65 @@
  * OTHER DEALINGS IN THE SOFTWARE.                                      
  */
 //Marks the right margin of code *******************************************************************
-package com.rmc.projects.multiplayertemplate.robotlegs.model.events.flexmobile
+package com.rmc.projects.multiplayertemplate.robotlegs.controller.commands.flexmobile
 {
 	
 	//--------------------------------------
 	//  Imports
 	//--------------------------------------
-	import flash.events.Event;
+	import com.rmc.errors.SwitchStatementDefaultError;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.events.ViewNavigatorEvent;
 	
-	import spark.transitions.ViewTransitionBase;
+	import mx.core.FlexGlobals;
+	
+	import org.robotlegs.mvcs.Command;
+	
+	import spark.components.ViewNavigatorApplication;
+	
 	
 	/**
-	 * <p>Event: For changes-to and changes-from the ViewNavigator</p>
+	 * <p>Command: Loading the display text for the application</p>
 	 * 
 	 */
-	public class ViewNavigatorEvent extends Event
+	public class ViewNavigatorCommand extends Command
 	{
+		
 		//--------------------------------------
 		//  Properties
 		//--------------------------------------
 		/**
-		 * Reference to the <code>ViewClass</code> to be pushed.
+		 * Event: 
 		 * 
 		 */	
-		public function get viewClass() 						: Class 		{ return _viewClass; }
-		public function set viewClass(aValue : Class) 		: void 			{ _viewClass = aValue; }
-		private var _viewClass : Class;
+		[Inject]
+		public var viewNavigatorEvent : ViewNavigatorEvent
 		
-		/**
-		 * Reference to the <code>ViewTransitionBase</code> to be used between views (such as fade/zoom)
-		 * 
-		 */	
-		public function get viewTransition() 							: ViewTransitionBase 	{ return _viewTransition; }
-		public function set viewTransition(aValue : ViewTransitionBase) 	: void 					{ _viewTransition = aValue; }
-		private var _viewTransition : ViewTransitionBase;
-		
-		/**
-		 * EventType Name
-		 * 
-		 */	
-		public static const PUSH_VIEW : String = "PUSH_VIEW";
-		
-		/**
-		 * EventType Name
-		 * 
-		 */	
-		public static const POP_VIEW : String = "POP_VIEW";
-		
-		//--------------------------------------
-		//  Constructor
-		//--------------------------------------
-		/**
-		 * This is the constructor.
-		 * 
-		 */
-		public function ViewNavigatorEvent (aType_str : String, aViewClass : Class = null, aViewTransition : ViewTransitionBase = null)
-		{
-			super (aType_str);
-			viewClass = aViewClass;
-			viewTransition = aViewTransition
-		}
 		
 		//--------------------------------------
 		//  Methods
 		//--------------------------------------
 		/**
-		 * Robotlegs Requirement: Clone the event
+		 * Robotlegs Requirement: Execute the command
 		 * 
-		 * @return Event
+		 * @return void
 		 *
 		 */
-		override public function clone () : Event
+		override public function execute():void
 		{
-			return new ViewNavigatorEvent (type, viewClass);
+			switch (viewNavigatorEvent.type) {
+				case ViewNavigatorEvent.PUSH_VIEW:
+					(FlexGlobals.topLevelApplication as ViewNavigatorApplication).navigator.pushView(viewNavigatorEvent.viewClass, null, null, viewNavigatorEvent.viewTransition);
+					break;
+				case ViewNavigatorEvent.POP_VIEW:
+					(FlexGlobals.topLevelApplication as ViewNavigatorApplication).navigator.popView(viewNavigatorEvent.viewTransition);
+					break;
+				default:
+					throw new SwitchStatementDefaultError ();
+					break;
+			}
+			
 		}
+		
 		
 		
 	}

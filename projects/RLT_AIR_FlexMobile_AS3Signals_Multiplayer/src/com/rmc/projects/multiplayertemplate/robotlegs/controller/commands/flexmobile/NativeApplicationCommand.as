@@ -22,82 +22,61 @@
  * OTHER DEALINGS IN THE SOFTWARE.                                      
  */
 //Marks the right margin of code *******************************************************************
-package com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.phrases
+package com.rmc.projects.multiplayertemplate.robotlegs.controller.commands.flexmobile
 {
 	
 	//--------------------------------------
 	//  Imports
 	//--------------------------------------
-	import com.rmc.projects.multiplayertemplate.robotlegs.model.events.phrases.PhrasesModelEvent;
+	import com.rmc.errors.SwitchStatementDefaultError;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.events.NativeApplicationEvent;
 	
-	import org.osflash.signals.Signal;
+	import flash.desktop.NativeApplication;
 	
-	//--------------------------------------
-	//  Metadata
-	//--------------------------------------
+	import org.robotlegs.mvcs.Command;
 	
-	//--------------------------------------
-	//  Class
-	//--------------------------------------
+	
 	/**
-	 * <p>The <code>ChangedPhrasesModelSignal</code> class marks after its changed, the <code>PhrasesModel</code>.</p>
+	 * <p>Command: Loading the display text for the application</p>
 	 * 
-	 * <p>AUTHOR  		: Samuel Asher Rivello (code [at] RivelloMultimediaConsulting [dot] com)</p>
-	 * <p>COMPANY 		: Rivello Multimedia Consulting</p>
-	 * <p>CREATION DATE 	: Jun 19, 2010</p>
-	 * 
-	 * @example Here is a code example.  
-	 * 
-	 * <listing version="3.0" >
-	 * 	//Code example goes here.
-	 * </listing>
-	 *
 	 */
-	public class ChangedPhrasesModelSignal extends Signal
-	{		
+	public class NativeApplicationCommand extends Command
+	{
 		
 		//--------------------------------------
 		//  Properties
 		//--------------------------------------
-		//PUBLIC GETTER/SETTERS
-		
-		//PUBLIC CONST
-		
-		//PRIVATE
-		
-		//--------------------------------------
-		//  Constructor
-		//--------------------------------------
 		/**
-		 * This is the constructor.
+		 * Event: 
 		 * 
-		 */
-		public function ChangedPhrasesModelSignal ()
-		{
-			//SUPER
-			super (PhrasesModelEvent) 
-			
-			//EVENTS
-			
-			//VARIABLES
-			
-			//PROPERTIES
-			
-			//METHODS
-			
-		}
+		 */	
+		[Inject]
+		public var nativeApplicationEvent : NativeApplicationEvent;
 		
 		
 		//--------------------------------------
 		//  Methods
-		//--------------------------------------		
-		//PUBLIC	
-		
-		//PRIVATE	
-		
 		//--------------------------------------
-		//  Event Handlers
-		//--------------------------------------		
+		/**
+		 * Robotlegs Requirement: Execute the command
+		 * 
+		 * @return void
+		 *
+		 */
+		override public function execute():void
+		{
+			switch (nativeApplicationEvent.type) {
+				case NativeApplicationEvent.EXIT:
+					NativeApplication.nativeApplication.exit();
+					break;
+				default:
+					throw new SwitchStatementDefaultError ();
+					break;
+			}
+			
+		}
+		
+		
 		
 	}
 }

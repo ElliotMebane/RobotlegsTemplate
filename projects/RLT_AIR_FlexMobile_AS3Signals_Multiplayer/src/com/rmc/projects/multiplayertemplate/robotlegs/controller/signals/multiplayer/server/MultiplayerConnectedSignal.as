@@ -66,7 +66,7 @@ package com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multip
 		public function MultiplayerConnectedSignal ()
 		{
 			//SUPER
-			super () 
+			super (ReactorEvent) 
 			
 			//EVENTS
 			

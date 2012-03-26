@@ -22,13 +22,14 @@
  * OTHER DEALINGS IN THE SOFTWARE.                                      
  */
 //Marks the right margin of code *******************************************************************
-package com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.phrases
+package com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.room
 {
 	
 	//--------------------------------------
 	//  Imports
 	//--------------------------------------
-	import com.rmc.projects.multiplayertemplate.robotlegs.model.events.phrases.PhrasesModelEvent;
+	import net.user1.reactor.AttributeEvent;
+	import net.user1.reactor.RoomEvent;
 	
 	import org.osflash.signals.Signal;
 	
@@ -40,20 +41,11 @@ package com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.phrase
 	//  Class
 	//--------------------------------------
 	/**
-	 * <p>The <code>ChangedPhrasesModelSignal</code> class marks after its changed, the <code>PhrasesModel</code>.</p>
+	 * <p>The <code>MultiplayerRoomAttributeUpdate</code> class marks ...</p>
 	 * 
-	 * <p>AUTHOR  		: Samuel Asher Rivello (code [at] RivelloMultimediaConsulting [dot] com)</p>
-	 * <p>COMPANY 		: Rivello Multimedia Consulting</p>
-	 * <p>CREATION DATE 	: Jun 19, 2010</p>
-	 * 
-	 * @example Here is a code example.  
-	 * 
-	 * <listing version="3.0" >
-	 * 	//Code example goes here.
-	 * </listing>
 	 *
 	 */
-	public class ChangedPhrasesModelSignal extends Signal
+	public class MultiplayerRoomAttributeUpdatedSignal extends Signal
 	{		
 		
 		//--------------------------------------
@@ -72,10 +64,10 @@ package com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.phrase
 		 * This is the constructor.
 		 * 
 		 */
-		public function ChangedPhrasesModelSignal ()
+		public function MultiplayerRoomAttributeUpdatedSignal ()
 		{
 			//SUPER
-			super (PhrasesModelEvent) 
+			super (AttributeEvent) 
 			
 			//EVENTS
 			

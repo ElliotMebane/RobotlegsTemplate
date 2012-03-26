@@ -22,13 +22,16 @@
  * OTHER DEALINGS IN THE SOFTWARE.                                      
  */
 //Marks the right margin of code *******************************************************************
-package com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.phrases
+package com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.flexmobile
 {
 	
 	//--------------------------------------
 	//  Imports
 	//--------------------------------------
-	import com.rmc.projects.multiplayertemplate.robotlegs.model.events.phrases.PhrasesModelEvent;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.events.NativeApplicationEvent;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.events.ViewNavigatorEvent;
+	
+	import flash.desktop.NativeApplication;
 	
 	import org.osflash.signals.Signal;
 	
@@ -40,20 +43,10 @@ package com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.phrase
 	//  Class
 	//--------------------------------------
 	/**
-	 * <p>The <code>ChangedPhrasesModelSignal</code> class marks after its changed, the <code>PhrasesModel</code>.</p>
+	 * <p>The <code>NativeApplicationSignal</code> class marks ...</p>
 	 * 
-	 * <p>AUTHOR  		: Samuel Asher Rivello (code [at] RivelloMultimediaConsulting [dot] com)</p>
-	 * <p>COMPANY 		: Rivello Multimedia Consulting</p>
-	 * <p>CREATION DATE 	: Jun 19, 2010</p>
-	 * 
-	 * @example Here is a code example.  
-	 * 
-	 * <listing version="3.0" >
-	 * 	//Code example goes here.
-	 * </listing>
-	 *
 	 */
-	public class ChangedPhrasesModelSignal extends Signal
+	public class NativeApplicationSignal extends Signal
 	{		
 		
 		//--------------------------------------
@@ -72,10 +65,10 @@ package com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.phrase
 		 * This is the constructor.
 		 * 
 		 */
-		public function ChangedPhrasesModelSignal ()
+		public function NativeApplicationSignal ()
 		{
 			//SUPER
-			super (PhrasesModelEvent) 
+			super (NativeApplicationEvent) 
 			
 			//EVENTS
 			

@@ -8,7 +8,7 @@
 		<EN>Instructions</EN>
 	</phrase>
 	<phrase name = "instructionsBodyText_str">
-		<EN>Upon Loading the app will connect to server, join room, and message 'Hello World'. Experiment!</EN>
+		<EN>Upon loading, the app will connect to server, join room, and message 'Hello World'. Experiment!</EN>
 	</phrase>
 	<phrase name = "statusLabelText_str">
 		<EN>Status</EN>
@@ -19,12 +19,18 @@
 	<phrase name = "disconnectButtonLabel_str">
 		<EN>Disconnect</EN>
 	</phrase>
+	<phrase name = "exitApplicationButtonLabel_str">
+		<EN>Exit</EN>
+	</phrase>
 	
 	<phrase name = "serverLabelText_str">
 		<EN>Server</EN>
 	</phrase>
 	<phrase name = "roomLabelText_str">
 		<EN>Room</EN>
+	</phrase>
+	<phrase name = "roomAttributesLabelText_str">
+		<EN>Attributes</EN>
 	</phrase>
 	<phrase name = "joinRoomButtonLabel_str">
 		<EN>Join</EN>

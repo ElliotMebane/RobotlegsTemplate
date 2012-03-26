@@ -28,11 +28,11 @@ package com.rmc.projects.multiplayertemplate.robotlegs.model.phrases
 	//--------------------------------------
 	//  Imports
 	//--------------------------------------
-	import com.rmc.projects.multiplayertemplate.robotlegs.controller.LoadMessageCommand;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.commands.LoadMessageCommand;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.ChangedMessageModelSignal;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.phrases.ChangedPhrasesModelSignal;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.server.MultiplayerServerSignal;
-	import com.rmc.projects.multiplayertemplate.robotlegs.model.events.phraes.PhrasesModelEvent;
+	import com.rmc.projects.multiplayertemplate.robotlegs.model.events.phrases.PhrasesModelEvent;
 	import com.rmc.projects.multiplayertemplate.robotlegs.model.vo.phrases.PhrasesVO;
 	
 	import org.robotlegs.mvcs.Actor;

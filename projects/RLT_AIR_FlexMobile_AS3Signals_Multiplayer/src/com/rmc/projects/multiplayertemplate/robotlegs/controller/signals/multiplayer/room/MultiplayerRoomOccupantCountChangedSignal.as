@@ -66,7 +66,7 @@ package com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multip
 		public function MultiplayerRoomOccupantCountChangedSignal ()
 		{
 			//SUPER
-			super () 
+			super (RoomEvent) 
 			
 			//EVENTS
 			

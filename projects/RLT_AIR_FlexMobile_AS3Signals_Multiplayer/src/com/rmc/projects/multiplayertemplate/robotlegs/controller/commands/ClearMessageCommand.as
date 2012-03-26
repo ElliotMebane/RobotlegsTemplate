@@ -22,29 +22,30 @@
  * OTHER DEALINGS IN THE SOFTWARE.                                      
  */
 //Marks the right margin of code *******************************************************************
-package com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.phrases
+package com.rmc.projects.multiplayertemplate.robotlegs.controller.commands
 {
 	
 	//--------------------------------------
 	//  Imports
 	//--------------------------------------
-	import com.rmc.projects.multiplayertemplate.robotlegs.model.events.phrases.PhrasesModelEvent;
+	import com.rmc.projects.multiplayertemplate.managers.AssetManager;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.flexmobile.ViewNavigatorSignal;
+	import com.rmc.projects.multiplayertemplate.robotlegs.model.multiplayer.union.MultiplayerModel;
+	import com.rmc.projects.multiplayertemplate.robotlegs.model.phrases.PhrasesModel;
+	import com.rmc.projects.robotlegstemplate.robotlegs.model.events.flexmobile.MultiplayerConnectEvent;
+	import com.rmc.projects.multiplayertemplate.robotlegs.services.ILoadService;
 	
-	import org.osflash.signals.Signal;
+	import org.robotlegs.mvcs.Command;
 	
-	//--------------------------------------
-	//  Metadata
-	//--------------------------------------
+	import spark.transitions.FlipViewTransition;
 	
-	//--------------------------------------
-	//  Class
-	//--------------------------------------
+	
 	/**
-	 * <p>The <code>ChangedPhrasesModelSignal</code> class marks after its changed, the <code>PhrasesModel</code>.</p>
+	 * <p>Command: Clearing the message for the application</p>
 	 * 
 	 * <p>AUTHOR  		: Samuel Asher Rivello (code [at] RivelloMultimediaConsulting [dot] com)</p>
 	 * <p>COMPANY 		: Rivello Multimedia Consulting</p>
-	 * <p>CREATION DATE 	: Jun 19, 2010</p>
+	 * <p>CREATION DATE 	: Apr 05, 2010</p>
 	 * 
 	 * @example Here is a code example.  
 	 * 
@@ -53,51 +54,45 @@ package com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.phrase
 	 * </listing>
 	 *
 	 */
-	public class ChangedPhrasesModelSignal extends Signal
-	{		
+	public class ClearMessageCommand extends Command
+	{
 		
 		//--------------------------------------
 		//  Properties
 		//--------------------------------------
-		//PUBLIC GETTER/SETTERS
-		
-		//PUBLIC CONST
-		
-		//PRIVATE
-		
-		//--------------------------------------
-		//  Constructor
-		//--------------------------------------
 		/**
-		 * This is the constructor.
+		 * Reference to the MessageModel
 		 * 
 		 */
-		public function ChangedPhrasesModelSignal ()
-		{
-			//SUPER
-			super (PhrasesModelEvent) 
-			
-			//EVENTS
-			
-			//VARIABLES
-			
-			//PROPERTIES
-			
-			//METHODS
-			
-		}
+		[Inject]
+		public var messageModel : MultiplayerModel;
+		
+		/**
+		 * Signal: Change the View
+		 * 
+		 */
+		[Inject]
+		public var viewNavigatorPopViewSignal : ViewNavigatorSignal;
 		
 		
 		//--------------------------------------
 		//  Methods
-		//--------------------------------------		
-		//PUBLIC	
-		
-		//PRIVATE	
-		
 		//--------------------------------------
-		//  Event Handlers
-		//--------------------------------------		
-		
+		/**
+		 * Robotlegs Requirement: Execute the command
+		 * 
+		 * @return void
+		 *
+		 */
+		override public function execute():void
+		{
+			
+			//	CHANGE MESSAGE
+			messageModel.message = "";
+			
+			//	CHANGE VIEW
+			viewNavigatorPopViewSignal.dispatch(new MultiplayerConnectEvent (MultiplayerConnectEvent.POP_VIEW, null, AssetManager.getViewTransition(MultiplayerConnectEvent.POP_VIEW) ) );
+			
+		}
 	}
 }

@@ -32,7 +32,7 @@ package com.rmc.projects.multiplayertemplate.robotlegs.view
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.phrases.LoadPhrasesModelSignal;
 	import com.rmc.projects.multiplayertemplate.robotlegs.model.multiplayer.union.MultiplayerModel;
 	import com.rmc.projects.multiplayertemplate.robotlegs.model.phrases.PhrasesModel;
-	import com.rmc.projects.multiplayertemplate.robotlegs.model.events.phraes.PhrasesModelEvent;
+	import com.rmc.projects.multiplayertemplate.robotlegs.model.events.phrases.PhrasesModelEvent;
 	import com.rmc.projects.multiplayertemplate.robotlegs.model.vo.phrases.PhrasesVO;
 	import com.rmc.projects.multiplayertemplate.robotlegs.view.components.views.ClearMessageViewUI;
 	import com.rmc.projects.multiplayertemplate.robotlegs.view.components.views.LobbyViewUI;

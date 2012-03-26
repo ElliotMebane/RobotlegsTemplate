@@ -27,6 +27,8 @@ package com.rmc.projects.multiplayertemplate.robotlegs.view
 	//--------------------------------------
 	//  Imports
 	//--------------------------------------
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.events.NativeApplicationEvent;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.flexmobile.NativeApplicationSignal;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.message.MultiplayerMessageReceivedSignal;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.message.MultiplayerMessageSignal;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.room.MultiplayerRoomJoinedSignal;
@@ -36,7 +38,7 @@ package com.rmc.projects.multiplayertemplate.robotlegs.view
 	import com.rmc.projects.multiplayertemplate.robotlegs.model.events.multiplayer.MultiplayerMessageEvent;
 	import com.rmc.projects.multiplayertemplate.robotlegs.model.events.multiplayer.MultiplayerRoomEvent;
 	import com.rmc.projects.multiplayertemplate.robotlegs.model.events.multiplayer.MultiplayerServerEvent;
-	import com.rmc.projects.multiplayertemplate.robotlegs.model.events.phraes.PhrasesModelEvent;
+	import com.rmc.projects.multiplayertemplate.robotlegs.model.events.phrases.PhrasesModelEvent;
 	import com.rmc.projects.multiplayertemplate.robotlegs.model.multiplayer.union.MultiplayerModel;
 	import com.rmc.projects.multiplayertemplate.robotlegs.model.phrases.PhrasesModel;
 	import com.rmc.projects.multiplayertemplate.robotlegs.model.vo.multiplayer.MessageVO;
@@ -44,11 +46,16 @@ package com.rmc.projects.multiplayertemplate.robotlegs.view
 	import com.rmc.projects.multiplayertemplate.robotlegs.services.multiplayer.IMultiplayerService;
 	import com.rmc.projects.multiplayertemplate.robotlegs.view.components.views.LobbyViewUI;
 	
+	import flash.desktop.NativeApplication;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
 	import mx.collections.ArrayCollection;
 	
+	import net.user1.logger.Logger;
+	import net.user1.reactor.AttributeEvent;
 	import net.user1.reactor.Reactor;
+	import net.user1.reactor.ReactorEvent;
 	import net.user1.reactor.Room;
 	import net.user1.reactor.RoomEvent;
 	
@@ -120,6 +127,14 @@ package com.rmc.projects.multiplayertemplate.robotlegs.view
 		public var multiplayerModel : MultiplayerModel;
 		
 		/**
+		 * Reference: <code>NativeApplicationSignal</code>
+		 * 
+		 */	
+		[Inject]
+		public var nativeApplicationSignal : NativeApplicationSignal;
+		
+		
+		/**
 		 * Service: 
 		 * 
 		 */	
@@ -134,9 +149,16 @@ package com.rmc.projects.multiplayertemplate.robotlegs.view
 		[Inject]
 		public var phrasesModel : PhrasesModel;
 		
+		/**
+		 * BEFORE CLICKING ANY BUTTONS WE SHOW THE USER: connect/join/sendmessage.
+		 * 
+		 */		
+		private var _isAutomaticallyShowcasingFeatures_boolean:Boolean;
+		
 		//--------------------------------------
 		//  Constructor
 		//--------------------------------------
+
 		/**
 		 * This is the constructor.
 		 * 
@@ -162,34 +184,71 @@ package com.rmc.projects.multiplayertemplate.robotlegs.view
 			// 	View Listeners
 			lobbyViewUI.connectMultiplayer_signal.add  		(_doMultiplayerConnect);
 			lobbyViewUI.disconnectMultiplayer_signal.add  	(_doMultiplayerDisconnect);
-			lobbyViewUI.sendMessage_signal.add  			(_onSendMessage);
+			lobbyViewUI.exitApplication_signal.add  		(_doExitApplication);
+			//
+			lobbyViewUI.joinRoom_signal.add  				(_doJoinRoom);
+			lobbyViewUI.leaveRoom_signal.add  				(_doLeaveRoom);
+			//
+			lobbyViewUI.sendMessage_signal.add  			(_doSendMessage);
 			
 			//	Context Listeners
-			phrasesModel.changedPhrasesModelSignal.add 					(_onPhrasesModelChanged);
-			iMultiplayerService.multiplayerConnectedSignal.add 			(_onMultiplayerConnected);
-			iMultiplayerService.multiplayerDisconnectedSignal.add 		(_onMultiplayerDisconnected);
-			iMultiplayerService.multiplayerRoomJoinedSignal.add 		(_onMultiplayerRoomJoined);
-			iMultiplayerService.multiplayerMessageReceivedSignal.add 	(_onMultiplayerMessageReceived);
+			phrasesModel.changedPhrasesModelSignal.add 							(_onPhrasesModelChanged);
+			iMultiplayerService.multiplayerConnectedSignal.add 					(_onMultiplayerConnected);
+			iMultiplayerService.multiplayerDisconnectedSignal.add 				(_onMultiplayerDisconnected);
+			//
+			iMultiplayerService.multiplayerRoomJoinedSignal.add 				(_onMultiplayerRoomJoined);
+			iMultiplayerService.multiplayerRoomLeftSignal.add 					(_onMultiplayerRoomLeft);
+			iMultiplayerService.multiplayerMessageReceivedSignal.add 			(_onMultiplayerMessageReceived);
+			iMultiplayerService.multiplayerRoomOccupantAddedSignal.add 			(_onMultiplayerRoomOccupantAdded);
 			iMultiplayerService.multiplayerRoomOccupantCountChangedSignal.add 	(_onMultiplayerRoomOccupantCountChanged);
+			iMultiplayerService.multiplayerRoomOccupantRemovedSignal.add 		(_onMultiplayerRoomOccupantRemoved);
+			iMultiplayerService.multiplayerRoomAttributeUpdatedSignal.add 		(_onMultiplayerRoomAttributeUpdated);
 			
 			//	Presentation (Binding)
+			lobbyViewUI.statusMessage 	= "Preparing";
 			lobbyViewUI.isConnected 	= false;
 			lobbyViewUI.isJoined 		= false;
-			lobbyViewUI.statusMessage 	= "Preparing";
-			lobbyViewUI.serverURL_textinput.text 	= Configuration.SERVER_URL_DEFAULT;
-			lobbyViewUI.serverPort_textinput.text 	= Configuration.SERVER_PORT_DEFAULT.toString();
-			lobbyViewUI.roomName_textinput.text 	= Configuration.ROOM_NAME_DEFAULT;
-			lobbyViewUI.userName_textinput.text 	= Configuration.USER_NAME_DEFAULT + Math.round(Math.random()*1000);
-			
+			lobbyViewUI.isAwaitingServer = false;
+			_doResetUI();
 			
 			//	RE-CALL EACH TIME THIS VIEW IS POPPED ON
 			loadPhrasesModelSignal.dispatch ();
+			
+			//  BEFORE CLICKING ANY BUTTONS WE SHOW THE USER A SERIES OF THINGS...: connect/join/sendmessage.
+			_isAutomaticallyShowcasingFeatures_boolean = true;
+			
+			//	ONLY CONNECT HERE IF WE ARE NOT CONNECTED
+			trace ("multiplayerModel.API.isReady() " + multiplayerModel.API.isReady());
+			trace ("multiplayerModel.API.isReady() " + multiplayerModel.currentRoom);
+			//if (multiplayerModel.API.isReady()
 			_doMultiplayerConnect (null);
 			
 		}
 		
 		
 		//VIEW
+		/**
+		 * Reset UI
+		 * 
+		 * @return void
+		 * 
+		 */
+		private function _doResetUI ():void
+		{
+			lobbyViewUI.serverURL_textinput.text 	= Configuration.SERVER_URL_DEFAULT;
+			lobbyViewUI.serverPort_textinput.text 	= Configuration.SERVER_PORT_DEFAULT.toString();
+			lobbyViewUI.roomName_textinput.text 	= Configuration.ROOM_NAME_DEFAULT;
+			lobbyViewUI.userName_textinput.text 	= Configuration.USER_NAME_DEFAULT + Math.round(Math.random()*1000);
+			//
+			StyleableTextField(lobbyViewUI.output_textarea.textDisplay).htmlText = "";
+			lobbyViewUI.users_list.dataProvider = null;
+			
+			
+			
+		}
+		
+		
+		
 		/**
 		 * Handles the aEvent: <code>MouseEvent.CLICK</code>.
 		 * 
@@ -201,6 +260,11 @@ package com.rmc.projects.multiplayertemplate.robotlegs.view
 		private function _doMultiplayerConnect (aEvent : MouseEvent):void
 		{
 			
+			//SET SOME CONFIGURATION
+			multiplayerModel.API.getLog().setLevel(Logger.ERROR);
+			lobbyViewUI.isAwaitingServer = true;
+			
+			//
 			var serverURL_str : String = lobbyViewUI.serverURL_textinput.text;
 			var serverPort_uint : uint = uint (lobbyViewUI.serverPort_textinput.text)
 			multiplayerServerSignal.dispatch(
@@ -223,7 +287,8 @@ package com.rmc.projects.multiplayertemplate.robotlegs.view
 		private function _doMultiplayerDisconnect (aEvent : MouseEvent):void
 		{
 			//	Presentation
-			lobbyViewUI.statusMessage 	= "Disconnecting...";
+			lobbyViewUI.statusMessage 		= "Disconnecting...";
+			lobbyViewUI.isAwaitingServer 	= true;
 			
 			//
 			multiplayerServerSignal.dispatch(
@@ -232,18 +297,92 @@ package com.rmc.projects.multiplayertemplate.robotlegs.view
 		}
 		
 		/**
+		 * Handles the aEvent: <code>MouseEvent.CLICK</code>.
+		 * 
+		 * @param aEvent <code>MouseEvent</code> The incoming aEvent payload.
+		 *  
+		 * @return void
+		 * 
+		 */
+		private function _doExitApplication (aEvent : MouseEvent):void
+		{
+			//
+			nativeApplicationSignal.dispatch (new NativeApplicationEvent (NativeApplicationEvent.EXIT));
+			
+		}
+		
+		
+		/**
+		 * Handles the aEvent: <code>MouseEvent.CLICK</code>.
+		 * 
+		 * @param aEvent <code>MouseEvent</code> The incoming aEvent payload.
+		 *  
+		 * @return void
+		 * 
+		 */
+		private function _doJoinRoom (aEvent : MouseEvent):void
+		{
+			//	Presentation
+			lobbyViewUI.statusMessage 		= "Joining Room.";
+			lobbyViewUI.isAwaitingServer 	= true;
+			
+			//
+			var roomName_str : String = lobbyViewUI.roomName_textinput.text;
+			var userName_str : String = lobbyViewUI.userName_textinput.text;
+			//
+			multiplayerRoomSignal.dispatch(
+				new MultiplayerRoomEvent (MultiplayerRoomEvent.JOIN, roomName_str, userName_str)
+			);
+			
+		}
+		
+		
+		/**
+		 * Handles the aEvent: <code>MouseEvent.CLICK</code>.
+		 * 
+		 * @param aEvent <code>MouseEvent</code> The incoming aEvent payload.
+		 *  
+		 * @return void
+		 * 
+		 */
+		private function _doLeaveRoom (aEvent : MouseEvent):void
+		{
+			//	Presentation
+			lobbyViewUI.statusMessage 		= "Leaving Room...";
+			lobbyViewUI.isAwaitingServer 	= true;
+			
+			//
+			multiplayerRoomSignal.dispatch(
+				new MultiplayerRoomEvent (MultiplayerRoomEvent.LEAVE)
+			);
+			
+		}
+		
+		/**
 		 * Send a Message
 		 *  
 		 * @param aMessageVO
 		 * 
+		 * @return void
+		 * 
 		 */
-		private function _doSendMessage (aMessageVO : MessageVO):void
+		private function _doSendMessage (aMessageVO : MessageVO = null):void
 		{
 			//	Presentation
-			lobbyViewUI.statusMessage 	= "Message Sent.";
+			lobbyViewUI.statusMessage 		= "Sending Message.";
+			lobbyViewUI.isAwaitingServer 	= true;
 			
-			//
-			multiplayerMessageSignal.dispatch( new MultiplayerMessageEvent (MultiplayerMessageEvent.SEND, aMessageVO) );
+			//MESSAGE VO MAY OR MAY NOT BE SENT IN (DEPENDING ON SITUATION)
+			var messageVO : MessageVO;
+			if (aMessageVO) {
+				messageVO = aMessageVO				
+			} else {
+				messageVO = new MessageVO (lobbyViewUI.message_textinput.text);
+			}
+			multiplayerMessageSignal.dispatch( new MultiplayerMessageEvent (MultiplayerMessageEvent.SEND, messageVO) );
+			
+			//CLEAR TEXT
+			lobbyViewUI.message_textinput.text = "";
 			
 		}
 		
@@ -251,91 +390,125 @@ package com.rmc.projects.multiplayertemplate.robotlegs.view
 		//--------------------------------------
 		//  Events
 		//--------------------------------------
-		
-		
-		private function _onSendMessage ():void
-		{
-			var messageVO : MessageVO = new MessageVO (lobbyViewUI.message_textinput.text);
-			_doSendMessage (messageVO);
-			
-			//CLEAR TEXT
-			lobbyViewUI.message_textinput.text = "";
-			
-		}
-		
 		//CONTEXT
 		/**
 		 * Handles the Signal: <code>MultiplayerConnectedSignal</code>.
 		 * 
+		 * @param aEvent <code>ReactorEvent</code> The incoming aEvent payload.
+		 *  
 		 * @return void
 		 * 
 		 */
-		private function _onMultiplayerConnected ():void
+		private function _onMultiplayerConnected (aEvent : ReactorEvent):void
 		{
 			//	Presentation
 			lobbyViewUI.isConnected 		= true;
 			lobbyViewUI.statusMessage 		= "Connected.";
+			lobbyViewUI.isAwaitingServer 	= false;
 			
 			
 			//SO MOVE THIS CODE TO A COMMAND FOR 'multiplayerConnectedSignal'?
 			if (multiplayerModel.currentRoom == null) {
 				
-				var roomName_str : String = lobbyViewUI.roomName_textinput.text;
-				var userName_str : String = lobbyViewUI.userName_textinput.text;
-				//
-				multiplayerRoomSignal.dispatch(
-					new MultiplayerRoomEvent (MultiplayerRoomEvent.JOIN, roomName_str, userName_str)
-				);
+				_doJoinRoom(null);
 				
 			} else {
-				multiplayerRoomSignal.dispatch(
-					new MultiplayerRoomEvent (MultiplayerRoomEvent.LEAVE)
-				);
+				_doLeaveRoom(null);
 			}
 			
 		}
 		
 		/**
-		 * Handles the aEvent: <code>MouseEvent.CLICK</code>.
+		 * Handles the Signal: <code>MultiplayerDisconnectedSignal</code>.
 		 * 
-		 * @param aEvent <code>MouseEvent</code> The incoming aEvent payload.
+		 * @param aEvent <code>ReactorEvent</code> The incoming aEvent payload.
 		 *  
 		 * @return void
 		 * 
 		 */
-		private function _onMultiplayerDisconnected ():void
+		private function _onMultiplayerDisconnected (aEvent : ReactorEvent):void
 		{
+			
 			//	Presentation
 			lobbyViewUI.isConnected 		= false;
-			lobbyViewUI.statusMessage 	= "Disconnected.";	
+			lobbyViewUI.isAwaitingServer 	= false;
+			lobbyViewUI.statusMessage 		= "Disconnected.";	
+			_doResetUI();
 		}
 		
 		
 		/**
-		 * Handles the aEvent: <code>MouseEvent.CLICK</code>.
+		 * Handles the Signal: <code>MultiplayerRoomJoinedSignal</code>.
 		 * 
-		 * @param aEvent <code>MouseEvent</code> The incoming aEvent payload.
+		 * @param aEvent <code>RoomEvent</code> The incoming aEvent payload.
 		 *  
 		 * @return void
 		 * 
 		 */
-		private function _onMultiplayerRoomJoined ():void
+		private function _onMultiplayerRoomJoined (aEvent : RoomEvent):void
 		{
+			//if (aEvent.getClient().isSelf()) {
+			
 			//	Presentation
-			lobbyViewUI.isJoined 		= true;	
-			lobbyViewUI.statusMessage 	= "Room Joined.";
+			lobbyViewUI.statusMessage 		= "You Joined Room.";
+			lobbyViewUI.isJoined 			= true;	
+			lobbyViewUI.isAwaitingServer 	= false;
 			
 			var messageVO : MessageVO = new MessageVO ("Hello World!");
 			_doSendMessage (messageVO);
 			
+			//} else {
+			//	lobbyViewUI.statusMessage 	= "Other Joined Room.";
+			//}
+			
+			//ROOMS CAN HAVE ATTRIBUTES THAT ALL USERS CAN ACCESS, SEND A TEST
+			var isShared_boolean		: Boolean = true;	//DEFAULT
+			var isPersistant_boolean	: Boolean = false;	//DEFAULT
+			var isEvaluated_boolean		: Boolean = false;	//DEFAULT
+			var testValue_str 			: String  = String(Math.round (Math.random()*1000))
+			multiplayerModel.currentRoom.setAttribute("testAttribute", testValue_str, isShared_boolean, isPersistant_boolean, isEvaluated_boolean);
+			
+			
+		}
+		
+		
+		/**
+		 * Handles the Signal: <code>MultiplayerRoomJoinedSignal</code>.
+		 * 
+		 * @param aEvent <code>RoomEvent</code> The incoming aEvent payload.
+		 *  
+		 * @return void
+		 * 
+		 */
+		private function _onMultiplayerRoomLeft (aEvent : RoomEvent):void
+		{
+			//	Presentation
+			lobbyViewUI.statusMessage 		= "You Left Room.";
+			lobbyViewUI.isJoined 			= false;	
+			lobbyViewUI.isAwaitingServer 	= false;
 			
 		}
 		
 		//CONTEXT
-
-
-		private function _onMultiplayerRoomOccupantCountChanged ():void
+		/**
+		 * Handles the Signal: <code>MultiplayerRoomOccupantCountChangedSignal</code>.
+		 * 
+		 * @param aEvent <code>RoomEvent</code> The incoming aEvent payload.
+		 *  
+		 * @return void
+		 * 
+		 */
+		private function _onMultiplayerRoomOccupantCountChanged (aEvent : RoomEvent):void
 		{
+			trace ("occupant");
+			
+			//
+			//if ( (aEvent.target as Room).getClient( .isSelf()) {
+			lobbyViewUI.statusMessage 	= "You Joined Room.";
+			//} else {
+			//	lobbyViewUI.statusMessage 	= "Other Joined Room.";
+			//}
+			
 			//CREATE A FRESH COPY OF THE USERS IN AN 'AC' FOR THE NON-INTERACTIVE LIST VIEW
 			var dataProvider : ArrayCollection = new ArrayCollection ();
 			for each (var user : UserVO in multiplayerModel.users) {
@@ -344,15 +517,74 @@ package com.rmc.projects.multiplayertemplate.robotlegs.view
 			lobbyViewUI.users_list.dataProvider = dataProvider;
 		}
 		
-
-
+		/**
+		 * Handles the Signal: <code>MultiplayerRoomOccupantAddedSignal</code>.
+		 * 
+		 * @param aEvent <code>RoomEvent</code> The incoming aEvent payload.
+		 *  
+		 * @return void
+		 * 
+		 */
+		private function _onMultiplayerRoomOccupantAdded (aEvent : RoomEvent):void
+		{
+			trace ("added");
+		}
+		
+		/**
+		 * Handles the Signal: <code>MultiplayerRoomOccupantRemovedSignal</code>.
+		 * 
+		 * @param aEvent <code>RoomEvent</code> The incoming aEvent payload.
+		 *  
+		 * @return void
+		 * 
+		 */
+		private function _onMultiplayerRoomOccupantRemoved (aEvent : RoomEvent):void
+		{
+			//
+			trace ("removed");
+		}
+		
+		
+		/**
+		 * Handles the Signal: <code>MultiplayerRoomAttributeUpdatedSignal</code>.
+		 * 
+		 * @param aEvent <code>AttributeEvent</code> The incoming aEvent payload.
+		 *  
+		 * @return void
+		 * 
+		 */
+		private function _onMultiplayerRoomAttributeUpdated (aEvent : AttributeEvent):void
+		{
+			//NOTE: The Multiplayer Framework sets many attributes we DON'T care about, so use an IF
+			if (aEvent.getChangedAttr().name == "testAttribute") {
+				lobbyViewUI.roomAttributes_textinput.text = multiplayerModel.currentRoom.getAttribute("testAttribute")
+			}
+			
+		}
+		
+		
+		/**
+		 * Handles the Signal: <code>MultiplayerMessageReceivedSignal</code>.
+		 * 
+		 * @param aEvent <code>MultiplayerMessageEvent</code> The incoming aEvent payload.
+		 *  
+		 * @return void
+		 * 
+		 */
 		private function _onMultiplayerMessageReceived (aEvent : MultiplayerMessageEvent):void
 		{
 			//	Presentation
-			lobbyViewUI.statusMessage 	= "Message Received.";
+			lobbyViewUI.statusMessage 		= "Message Received.";
+			lobbyViewUI.isAwaitingServer 	= false;
 			
 			//
-			StyleableTextField(lobbyViewUI.output_textarea.textDisplay).htmlText += aEvent.messageVO.fromUsername + " : " + aEvent.messageVO.message;
+			if (StyleableTextField(lobbyViewUI.output_textarea.textDisplay).htmlText.length == 0) {
+				//FIRST LINE EVER
+				StyleableTextField(lobbyViewUI.output_textarea.textDisplay).htmlText = aEvent.messageVO.fromUsername + " : " + aEvent.messageVO.message;
+			} else {
+				//OTHER LINES
+				StyleableTextField(lobbyViewUI.output_textarea.textDisplay).htmlText += aEvent.messageVO.fromUsername + " : " + aEvent.messageVO.message;
+			}
 			
 		}
 		

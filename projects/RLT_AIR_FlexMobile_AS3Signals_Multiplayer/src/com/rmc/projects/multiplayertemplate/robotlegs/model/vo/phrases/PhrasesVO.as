@@ -58,8 +58,10 @@ package com.rmc.projects.multiplayertemplate.robotlegs.model.vo.phrases
 		public var statusLabelText_str : String;
 		public var connectButtonLabel_str : String;
 		public var disconnectButtonLabel_str : String;
+		public var exitApplicationButtonLabel_str : String;
 		//
 		public var serverLabelText_str : String;
+		public var roomAttributesLabelText_str : String;
 		public var roomLabelText_str : String;
 		public var joinRoomButtonLabel_str : String;
 		public var leaveRoomButtonLabel_str : String;
@@ -68,8 +70,7 @@ package com.rmc.projects.multiplayertemplate.robotlegs.model.vo.phrases
 		public var messageButtonLabel_str : String;
 		public var usersLabelText_str : String;
 		public var outputLabelText_str : String;
-		
-	
+
 		//--------------------------------------
 		//  Constructor
 		//--------------------------------------

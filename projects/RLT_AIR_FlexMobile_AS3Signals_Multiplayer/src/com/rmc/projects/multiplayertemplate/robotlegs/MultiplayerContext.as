@@ -28,22 +28,20 @@ package com.rmc.projects.multiplayertemplate.robotlegs
 	//--------------------------------------
 	//  Imports
 	//--------------------------------------
-	import com.rmc.projects.multiplayertemplate.robotlegs.controller.ClearMessageCommand;
-	import com.rmc.projects.multiplayertemplate.robotlegs.controller.LoadMessageCommand;
-	import com.rmc.projects.multiplayertemplate.robotlegs.controller.ShutdownCommand;
-	import com.rmc.projects.multiplayertemplate.robotlegs.controller.StartupCommand;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.commands.ShutdownCommand;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.commands.StartupCommand;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.commands.flexmobile.NativeApplicationCommand;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.commands.multiplayer.MultiplayerMessageCommand;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.commands.multiplayer.MultiplayerRoomCommand;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.commands.multiplayer.MultiplayerServerCommand;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.commands.phrases.LoadPhrasesCommand;
-	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.ClearMessageModelSignal;
-	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.flexmobile.ViewNavigatorPopViewSignal;
-	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.flexmobile.ViewNavigatorPushViewSignal;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.flexmobile.NativeApplicationSignal;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.flexmobile.ViewNavigatorSignal;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.message.MultiplayerMessageSignal;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.room.MultiplayerRoomSignal;
-	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.server.MultiplayerServerSignal;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.server.MultiplayerConnectedSignal;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.server.MultiplayerDisconnectedSignal;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.server.MultiplayerServerSignal;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.phrases.LoadPhrasesModelSignal;
 	import com.rmc.projects.multiplayertemplate.robotlegs.model.multiplayer.union.MultiplayerModel;
 	import com.rmc.projects.multiplayertemplate.robotlegs.model.phrases.PhrasesModel;
@@ -137,8 +135,7 @@ package com.rmc.projects.multiplayertemplate.robotlegs
 			phrasesModel.langCode 			= PhrasesModel.EN;
 			injector.mapValue		(PhrasesModel, phrasesModel);
 			//
-			injector.mapSingleton	(ViewNavigatorPushViewSignal);	
-			injector.mapSingleton	(ViewNavigatorPopViewSignal);	
+			injector.mapSingleton	(ViewNavigatorSignal);	
 			//
 			injector.mapSingleton	(MultiplayerModel);				
 			
@@ -178,9 +175,10 @@ package com.rmc.projects.multiplayertemplate.robotlegs
 			//a. REQUESTS
 			signalCommandMap.mapSignalClass(LoadPhrasesModelSignal,   		LoadPhrasesCommand);
 			//
-			signalCommandMap.mapSignalClass(MultiplayerServerSignal,   	MultiplayerServerCommand);
-			signalCommandMap.mapSignalClass(MultiplayerMessageSignal,   	MultiplayerMessageCommand);
-			signalCommandMap.mapSignalClass(MultiplayerRoomSignal, 			MultiplayerRoomCommand);
+			signalCommandMap.mapSignalClass	(MultiplayerServerSignal,   	MultiplayerServerCommand);
+			signalCommandMap.mapSignalClass	(MultiplayerMessageSignal,   	MultiplayerMessageCommand);
+			signalCommandMap.mapSignalClass	(MultiplayerRoomSignal, 		MultiplayerRoomCommand);
+			signalCommandMap.mapSignalClass	(NativeApplicationSignal, 		NativeApplicationCommand);
 			//
 			commandMap.mapEvent 		(ContextEvent.STARTUP,  StartupCommand);
 			commandMap.mapEvent 		(ContextEvent.SHUTDOWN, ShutdownCommand);

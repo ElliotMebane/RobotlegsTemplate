@@ -22,19 +22,24 @@
  * OTHER DEALINGS IN THE SOFTWARE.                                      
  */
 //Marks the right margin of code *******************************************************************
-package com.rmc.projects.multiplayertemplate.robotlegs.model.events.phraes
+package com.rmc.projects.multiplayertemplate.robotlegs.controller.commands
 {
 	
 	//--------------------------------------
 	//  Imports
 	//--------------------------------------
+	import com.rmc.projects.multiplayertemplate.robotlegs.model.multiplayer.union.MultiplayerModel;
 	import com.rmc.projects.multiplayertemplate.robotlegs.model.phrases.PhrasesModel;
-	import com.rmc.projects.multiplayertemplate.robotlegs.model.vo.phrases.PhrasesVO;
+	import com.rmc.projects.multiplayertemplate.robotlegs.services.ILoadService;
+	import com.rmc.projects.multiplayertemplate.robotlegs.services.phrases.PhrasesLoadService;
+	import com.rmc.projects.multiplayertemplate.robotlegs.view.LobbyViewUIMediator;
+	import com.rmc.projects.multiplayertemplate.robotlegs.view.components.views.LobbyViewUI;
 	
-	import flash.events.Event;
+	import org.robotlegs.base.ContextEvent;
+	import org.robotlegs.mvcs.Command;
 	
 	/**
-	 * <p>Event: For changes to the PhrasesModel</p>
+	 * <p>Command: Handles the shutdown of the application. (Importance is TBD)</p>
 	 * 
 	 * <p>AUTHOR  		: Samuel Asher Rivello (code [at] RivelloMultimediaConsulting [dot] com)</p>
 	 * <p>COMPANY 		: Rivello Multimedia Consulting</p>
@@ -47,52 +52,41 @@ package com.rmc.projects.multiplayertemplate.robotlegs.model.events.phraes
 	 * </listing>
 	 *
 	 */
-	public class PhrasesModelEvent extends Event
+	public class ShutdownCommand extends Command
 	{
-		//--------------------------------------
-		//  Properties
-		//--------------------------------------
-		
-		/**
-		 * Reference to the MessageModel
-		 * 
-		 */	
-		public var phrasesModel : PhrasesModel;
-		
-		
-		/**
-		 * EventType Name
-		 * 
-		 */	
-		public static const PHRASES_MODEL_CHANGED : String = "PHRASES_MODEL_CHANGED"; //aka 'loaded' from external file or whatever...
-		
-		//--------------------------------------
-		//  Constructor
-		//--------------------------------------
-		/**
-		 * This is the constructor.
-		 * 
-		 */
-		public function PhrasesModelEvent (aType_str : String, aPhrasesModel : PhrasesModel)
-		{
-			super (aType_str);
-			phrasesModel = aPhrasesModel;
-		}
 		
 		//--------------------------------------
 		//  Methods
 		//--------------------------------------
 		/**
-		 * Robotlegs Requirement: Clone the event
+		 * Robotlegs Requirement: Execute the command
 		 * 
-		 * @return Event
+		 * @return void
 		 *
 		 */
-		override public function clone () : Event
+		override public function execute():void
 		{
-			return new PhrasesModelEvent (type, phrasesModel);
-		}
+			/*
+			
+				REGULARLY CHECK THAT THIS MATCHES 
+					(THE REVERSE OF WHAT IS SETUP IN) THE STARTUP COMMAND
+			
+			*/
 
-	
+			// Model
+			injector.unmap (MultiplayerModel);
+			injector.unmap (PhrasesModel);
+
+			// View
+			mediatorMap.unmapView (LobbyViewUI);
+			
+			// Controller
+			commandMap.unmapEvent 		(ContextEvent.STARTUP,  StartupCommand);
+			commandMap.unmapEvent 		(ContextEvent.SHUTDOWN, ShutdownCommand);
+			
+			// Services
+			injector.unmap (ILoadService, "PhrasesLoadService");
+
+		}
 	}
 }

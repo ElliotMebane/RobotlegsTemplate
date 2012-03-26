@@ -22,28 +22,19 @@
  * OTHER DEALINGS IN THE SOFTWARE.                                      
  */
 //Marks the right margin of code *******************************************************************
-package com.rmc.projects.multiplayertemplate.robotlegs.controller
+package com.rmc.projects.multiplayertemplate.robotlegs.model.events.phrases
 {
 	
 	//--------------------------------------
 	//  Imports
 	//--------------------------------------
-	import com.rmc.projects.multiplayertemplate.managers.AssetManager;
-	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.flexmobile.ViewNavigatorPushViewSignal;
-	import com.rmc.projects.multiplayertemplate.robotlegs.model.multiplayer.union.MultiplayerModel;
-	import com.rmc.projects.robotlegstemplate.robotlegs.model.events.flexmobile.MultiplayerConnectEvent;
-	import com.rmc.projects.multiplayertemplate.robotlegs.services.ILoadService;
-	import com.rmc.projects.multiplayertemplate.robotlegs.view.components.views.ClearMessageViewUI;
-	import com.rmc.projects.multiplayertemplate.robotlegs.view.components.views.LobbyViewUI;
+	import com.rmc.projects.multiplayertemplate.robotlegs.model.phrases.PhrasesModel;
+	import com.rmc.projects.multiplayertemplate.robotlegs.model.vo.phrases.PhrasesVO;
 	
-	import org.robotlegs.mvcs.Command;
-	
-	import spark.transitions.CrossFadeViewTransition;
-	import spark.transitions.FlipViewTransition;
-	
+	import flash.events.Event;
 	
 	/**
-	 * <p>Command: Loading the message for the application</p>
+	 * <p>Event: For changes to the PhrasesModel</p>
 	 * 
 	 * <p>AUTHOR  		: Samuel Asher Rivello (code [at] RivelloMultimediaConsulting [dot] com)</p>
 	 * <p>COMPANY 		: Rivello Multimedia Consulting</p>
@@ -56,45 +47,52 @@ package com.rmc.projects.multiplayertemplate.robotlegs.controller
 	 * </listing>
 	 *
 	 */
-	public class LoadMessageCommand extends Command
+	public class PhrasesModelEvent extends Event
 	{
-		
 		//--------------------------------------
 		//  Properties
 		//--------------------------------------
+		
 		/**
 		 * Reference to the MessageModel
 		 * 
-		 */
-		[Inject]
-		public var messageModel : MultiplayerModel;
+		 */	
+		public var phrasesModel : PhrasesModel;
+		
 		
 		/**
-		 * Signal: Change the View
+		 * EventType Name
+		 * 
+		 */	
+		public static const PHRASES_MODEL_CHANGED : String = "PHRASES_MODEL_CHANGED"; //aka 'loaded' from external file or whatever...
+		
+		//--------------------------------------
+		//  Constructor
+		//--------------------------------------
+		/**
+		 * This is the constructor.
 		 * 
 		 */
-		[Inject]
-		public var viewNavigatorPushViewSignal : ViewNavigatorPushViewSignal;
+		public function PhrasesModelEvent (aType_str : String, aPhrasesModel : PhrasesModel)
+		{
+			super (aType_str);
+			phrasesModel = aPhrasesModel;
+		}
 		
 		//--------------------------------------
 		//  Methods
 		//--------------------------------------
 		/**
-		 * Robotlegs Requirement: Execute the command
+		 * Robotlegs Requirement: Clone the event
 		 * 
-		 * @return void
+		 * @return Event
 		 *
 		 */
-		override public function execute():void
+		override public function clone () : Event
 		{
-			
-			//CHANGE VIEW
-			viewNavigatorPushViewSignal.dispatch(new MultiplayerConnectEvent (MultiplayerConnectEvent.PUSH_VIEW, ClearMessageViewUI, AssetManager.getViewTransition(MultiplayerConnectEvent.PUSH_VIEW)));
-			
-			//	Of course this would likely be transated too, but
-			//	for sake of demonstration it has been 
-			//	separated from the phrasesVO as if its a different source of data
-			messageModel.message = "<B>Hello</B> <i>World</i>!";
+			return new PhrasesModelEvent (type, phrasesModel);
 		}
+
+	
 	}
 }

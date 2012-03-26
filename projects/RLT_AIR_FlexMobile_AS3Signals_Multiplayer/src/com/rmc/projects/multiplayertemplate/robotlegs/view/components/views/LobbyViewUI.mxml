@@ -6,6 +6,7 @@
 	
 	creationComplete="_onCreationComplete(event)"
 	title="{phrasesVO.applicationTitle_str}"
+	enabled="{!isAwaitingServer}"
 	
 	>
 	
@@ -35,6 +36,24 @@
 			 * 
 			 */
 			public var disconnectMultiplayer_signal : NativeSignal;
+			
+			/**
+			 * Signal: When 'Join' is Clicked
+			 * 
+			 */
+			public var joinRoom_signal : NativeSignal;
+			
+			/**
+			 * Signal: When 'Leave' is Clicked
+			 * 
+			 */
+			public var leaveRoom_signal : NativeSignal;
+			
+			/**
+			 * Signal: When 'Exit' is Clicked
+			 * 
+			 */
+			public var exitApplication_signal : NativeSignal;
 			
 			/**
 			 * Signal: When 'Send' is Clicked
@@ -70,6 +89,15 @@
 			public function set isJoined (aValue : Boolean) 	: void 		{ _isJoined_boolean = aValue; }
 			private var _isJoined_boolean : Boolean;
 			
+			/**
+			 * Describe this member.
+			 *  
+			 */		
+			[Bindable]
+			public function get isAwaitingServer () 					: Boolean 	{ return _isAwaitingServer_boolean; }
+			public function set isAwaitingServer (aValue : Boolean) 	: void 		{ _isAwaitingServer_boolean = aValue; }
+			private var _isAwaitingServer_boolean : Boolean = false;
+			
 			
 			
 			//PUBLIC CONST
@@ -100,6 +128,11 @@
 				connectMultiplayer_signal  		= new NativeSignal	(connectMultiplayer_button, 	MouseEvent.CLICK, MouseEvent);	
 				disconnectMultiplayer_signal  	= new NativeSignal	(disconnectMultiplayer_button, 	MouseEvent.CLICK, MouseEvent);	
 				//
+				exitApplication_signal  		= new NativeSignal	(exitApplication_button, 		MouseEvent.CLICK, MouseEvent);	
+				leaveRoom_signal  				= new NativeSignal	(leaveRoom_button, 				MouseEvent.CLICK, MouseEvent);	
+				joinRoom_signal  				= new NativeSignal	(joinRoom_button, 				MouseEvent.CLICK, MouseEvent);	
+				//
+				//
 				sendMessage_signal  			= new Signal(); //two events may trigger this, see event handlers below
 			}
 			
@@ -115,6 +148,7 @@
 			{
 				sendMessage_signal.dispatch();
 			}
+			
 			
 		]]>
 	</fx:Script>
@@ -139,11 +173,14 @@
 		<s:TextInput id = "userName_textinput" width="100%" text="" enabled="{!isConnected}"  selectable="false"  />
 		<s:Button 	id = "connectMultiplayer_button"  		width="100%" label="{phrasesVO.connectButtonLabel_str}" enabled="{!isConnected}" />
 		<s:Button 	id = "disconnectMultiplayer_button"  label="{phrasesVO.disconnectButtonLabel_str}" enabled="{isConnected}"/>
+		<s:Button 	id = "exitApplication_button"  label="{phrasesVO.exitApplicationButtonLabel_str}" />
 		
 	</s:HGroup>
 	<s:HGroup width="100%" verticalAlign="middle" >
 		<s:Label width="200" text="{phrasesVO.roomLabelText_str}" />
 		<s:TextInput id = "roomName_textinput" width="100%" text="" enabled="{(isConnected)  &amp;&amp; (!isJoined)}"  selectable="false" />
+		<s:Label width="150" text="{phrasesVO.roomAttributesLabelText_str}" />
+		<s:TextInput id = "roomAttributes_textinput" width="100%" enabled="false"  selectable="false" />
 		<s:Button 	 id = "joinRoom_button" width="200" label="{phrasesVO.joinRoomButtonLabel_str}" enabled="{((isConnected) &amp;&amp; (!isJoined) &amp;&amp; (roomName_textinput.text.length > 0))}" />
 		<s:Button 	 id = "leaveRoom_button" width="200" label="{phrasesVO.leaveRoomButtonLabel_str}" enabled="{((isConnected) &amp;&amp; (isJoined) )}" />
 	</s:HGroup>
@@ -167,7 +204,7 @@
 	<s:HGroup width="100%" height="100%">
 		<s:VGroup width="50%" height="100%">
 			<s:Label 											width="100%" text="{phrasesVO.usersLabelText_str}"  />
-			<s:List id = "users_list" labelField="name" width="100%" height="100%" />
+			<s:List id = "users_list" labelField="name" width="100%" height="100%" borderVisible="true" borderColor="0x000000" borderAlpha="1" />
 		</s:VGroup>
 		<s:VGroup width="50%" height="100%">
 			<s:Label 											width="100%" text="{phrasesVO.outputLabelText_str}"  />

@@ -22,48 +22,52 @@
  * OTHER DEALINGS IN THE SOFTWARE.                                      
  */
 //Marks the right margin of code *******************************************************************
-package com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.phrases
+package com.rmc.projects.multiplayertemplate.robotlegs.controller.events
 {
 	
 	//--------------------------------------
 	//  Imports
 	//--------------------------------------
-	import com.rmc.projects.multiplayertemplate.robotlegs.model.events.phrases.PhrasesModelEvent;
+	import flash.events.Event;
 	
-	import org.osflash.signals.Signal;
+	import spark.transitions.ViewTransitionBase;
 	
-	//--------------------------------------
-	//  Metadata
-	//--------------------------------------
-	
-	//--------------------------------------
-	//  Class
-	//--------------------------------------
 	/**
-	 * <p>The <code>ChangedPhrasesModelSignal</code> class marks after its changed, the <code>PhrasesModel</code>.</p>
+	 * <p>Event: For changes-to and changes-from the ViewNavigator</p>
 	 * 
-	 * <p>AUTHOR  		: Samuel Asher Rivello (code [at] RivelloMultimediaConsulting [dot] com)</p>
-	 * <p>COMPANY 		: Rivello Multimedia Consulting</p>
-	 * <p>CREATION DATE 	: Jun 19, 2010</p>
-	 * 
-	 * @example Here is a code example.  
-	 * 
-	 * <listing version="3.0" >
-	 * 	//Code example goes here.
-	 * </listing>
-	 *
 	 */
-	public class ChangedPhrasesModelSignal extends Signal
-	{		
-		
+	public class ViewNavigatorEvent extends Event
+	{
 		//--------------------------------------
 		//  Properties
 		//--------------------------------------
-		//PUBLIC GETTER/SETTERS
+		/**
+		 * Reference to the <code>ViewClass</code> to be pushed.
+		 * 
+		 */	
+		public function get viewClass() 						: Class 		{ return _viewClass; }
+		public function set viewClass(aValue : Class) 		: void 			{ _viewClass = aValue; }
+		private var _viewClass : Class;
 		
-		//PUBLIC CONST
+		/**
+		 * Reference to the <code>ViewTransitionBase</code> to be used between views (such as fade/zoom)
+		 * 
+		 */	
+		public function get viewTransition() 							: ViewTransitionBase 	{ return _viewTransition; }
+		public function set viewTransition(aValue : ViewTransitionBase) 	: void 					{ _viewTransition = aValue; }
+		private var _viewTransition : ViewTransitionBase;
 		
-		//PRIVATE
+		/**
+		 * EventType Name
+		 * 
+		 */	
+		public static const PUSH_VIEW : String = "PUSH_VIEW";
+		
+		/**
+		 * EventType Name
+		 * 
+		 */	
+		public static const POP_VIEW : String = "POP_VIEW";
 		
 		//--------------------------------------
 		//  Constructor
@@ -72,32 +76,27 @@ package com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.phrase
 		 * This is the constructor.
 		 * 
 		 */
-		public function ChangedPhrasesModelSignal ()
+		public function ViewNavigatorEvent (aType_str : String, aViewClass : Class = null, aViewTransition : ViewTransitionBase = null)
 		{
-			//SUPER
-			super (PhrasesModelEvent) 
-			
-			//EVENTS
-			
-			//VARIABLES
-			
-			//PROPERTIES
-			
-			//METHODS
-			
+			super (aType_str);
+			viewClass = aViewClass;
+			viewTransition = aViewTransition
 		}
-		
 		
 		//--------------------------------------
 		//  Methods
-		//--------------------------------------		
-		//PUBLIC	
-		
-		//PRIVATE	
-		
 		//--------------------------------------
-		//  Event Handlers
-		//--------------------------------------		
+		/**
+		 * Robotlegs Requirement: Clone the event
+		 * 
+		 * @return Event
+		 *
+		 */
+		override public function clone () : Event
+		{
+			return new ViewNavigatorEvent (type, viewClass);
+		}
+		
 		
 	}
 }

@@ -27,11 +27,10 @@ package com.rmc.projects.multiplayertemplate.robotlegs.view
 	//--------------------------------------
 	//  Imports
 	//--------------------------------------
-	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.flexmobile.ViewNavigatorPopViewSignal;
-	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.flexmobile.ViewNavigatorPushViewSignal;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.flexmobile.ViewNavigatorSignal;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.events.ViewNavigatorEvent;
+	import com.rmc.projects.multiplayertemplate.robotlegs.model.events.phrases.PhrasesModelEvent;
 	import com.rmc.projects.multiplayertemplate.robotlegs.model.phrases.PhrasesModel;
-	import com.rmc.projects.multiplayertemplate.robotlegs.model.events.flexmobile.ViewNavigatorEvent;
-	import com.rmc.projects.multiplayertemplate.robotlegs.model.events.phraes.PhrasesModelEvent;
 	import com.rmc.projects.multiplayertemplate.robotlegs.model.vo.phrases.PhrasesVO;
 	
 	import org.robotlegs.mvcs.Mediator;
@@ -68,14 +67,8 @@ package com.rmc.projects.multiplayertemplate.robotlegs.view
 		 * 
 		 */	
 		[Inject]
-		public var viewNavigatorPushViewSignal : ViewNavigatorPushViewSignal;
-		
-		/**
-		 * Signal: Marks a request on <code>ViewNavigator</code>
-		 * 
-		 */	
-		[Inject]
-		public var viewNavigatorPopViewSignal : ViewNavigatorPopViewSignal;
+		public var viewNavigatorSignal : ViewNavigatorSignal
+
 		
 		/**
 		 * Reference: <code>PhrasesModel</code>
@@ -111,8 +104,7 @@ package com.rmc.projects.multiplayertemplate.robotlegs.view
 			//	UI
 
 			//	Context Listeners
-			viewNavigatorPushViewSignal.add (_onViewNavigatorPushViewSignal);
-			viewNavigatorPopViewSignal.add (_onViewNavigatorPopViewSignal);
+			viewNavigatorSignal.add (_onViewNavigatorPushViewSignal);
 			phrasesModel.changedPhrasesModelSignal.add (_onPhrasesModelChanged);
 
 		}

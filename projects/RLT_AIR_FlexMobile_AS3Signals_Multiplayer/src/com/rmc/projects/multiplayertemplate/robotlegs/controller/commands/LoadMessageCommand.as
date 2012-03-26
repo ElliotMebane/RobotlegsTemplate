@@ -22,29 +22,32 @@
  * OTHER DEALINGS IN THE SOFTWARE.                                      
  */
 //Marks the right margin of code *******************************************************************
-package com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.phrases
+package com.rmc.projects.multiplayertemplate.robotlegs.controller.commands
 {
 	
 	//--------------------------------------
 	//  Imports
 	//--------------------------------------
-	import com.rmc.projects.multiplayertemplate.robotlegs.model.events.phrases.PhrasesModelEvent;
+	import com.rmc.projects.multiplayertemplate.managers.AssetManager;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.flexmobile.ViewNavigatorPushViewSignal;
+	import com.rmc.projects.multiplayertemplate.robotlegs.model.multiplayer.union.MultiplayerModel;
+	import com.rmc.projects.robotlegstemplate.robotlegs.model.events.flexmobile.MultiplayerConnectEvent;
+	import com.rmc.projects.multiplayertemplate.robotlegs.services.ILoadService;
+	import com.rmc.projects.multiplayertemplate.robotlegs.view.components.views.ClearMessageViewUI;
+	import com.rmc.projects.multiplayertemplate.robotlegs.view.components.views.LobbyViewUI;
 	
-	import org.osflash.signals.Signal;
+	import org.robotlegs.mvcs.Command;
 	
-	//--------------------------------------
-	//  Metadata
-	//--------------------------------------
+	import spark.transitions.CrossFadeViewTransition;
+	import spark.transitions.FlipViewTransition;
 	
-	//--------------------------------------
-	//  Class
-	//--------------------------------------
+	
 	/**
-	 * <p>The <code>ChangedPhrasesModelSignal</code> class marks after its changed, the <code>PhrasesModel</code>.</p>
+	 * <p>Command: Loading the message for the application</p>
 	 * 
 	 * <p>AUTHOR  		: Samuel Asher Rivello (code [at] RivelloMultimediaConsulting [dot] com)</p>
 	 * <p>COMPANY 		: Rivello Multimedia Consulting</p>
-	 * <p>CREATION DATE 	: Jun 19, 2010</p>
+	 * <p>CREATION DATE 	: Apr 05, 2010</p>
 	 * 
 	 * @example Here is a code example.  
 	 * 
@@ -53,51 +56,45 @@ package com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.phrase
 	 * </listing>
 	 *
 	 */
-	public class ChangedPhrasesModelSignal extends Signal
-	{		
+	public class LoadMessageCommand extends Command
+	{
 		
 		//--------------------------------------
 		//  Properties
 		//--------------------------------------
-		//PUBLIC GETTER/SETTERS
-		
-		//PUBLIC CONST
-		
-		//PRIVATE
-		
-		//--------------------------------------
-		//  Constructor
-		//--------------------------------------
 		/**
-		 * This is the constructor.
+		 * Reference to the MessageModel
 		 * 
 		 */
-		public function ChangedPhrasesModelSignal ()
-		{
-			//SUPER
-			super (PhrasesModelEvent) 
-			
-			//EVENTS
-			
-			//VARIABLES
-			
-			//PROPERTIES
-			
-			//METHODS
-			
-		}
+		[Inject]
+		public var messageModel : MultiplayerModel;
 		
+		/**
+		 * Signal: Change the View
+		 * 
+		 */
+		[Inject]
+		public var viewNavigatorPushViewSignal : ViewNavigatorPushViewSignal;
 		
 		//--------------------------------------
 		//  Methods
-		//--------------------------------------		
-		//PUBLIC	
-		
-		//PRIVATE	
-		
 		//--------------------------------------
-		//  Event Handlers
-		//--------------------------------------		
-		
+		/**
+		 * Robotlegs Requirement: Execute the command
+		 * 
+		 * @return void
+		 *
+		 */
+		override public function execute():void
+		{
+			
+			//CHANGE VIEW
+			viewNavigatorPushViewSignal.dispatch(new MultiplayerConnectEvent (MultiplayerConnectEvent.PUSH_VIEW, ClearMessageViewUI, AssetManager.getViewTransition(MultiplayerConnectEvent.PUSH_VIEW)));
+			
+			//	Of course this would likely be transated too, but
+			//	for sake of demonstration it has been 
+			//	separated from the phrasesVO as if its a different source of data
+			messageModel.message = "<B>Hello</B> <i>World</i>!";
+		}
 	}
 }

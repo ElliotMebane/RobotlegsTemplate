@@ -8,10 +8,7 @@
 	
 	<fx:Script>
 		<![CDATA[
-			
-			//--------------------------------------
-			//  Imports
-			//--------------------------------------
+			import com.rmc.projects.multiplayertemplate.robotlegs.controller.events.ViewNavigatorEvent;
 			import com.rmc.projects.multiplayertemplate.robotlegs.model.vo.phrases.PhrasesVO;
 			
 			import mx.events.FlexEvent;
@@ -49,6 +46,8 @@
 			// --------------------------------------
 			// Event Handlers
 			// --------------------------------------
+
+
 			
 		]]>
 	</fx:Script>

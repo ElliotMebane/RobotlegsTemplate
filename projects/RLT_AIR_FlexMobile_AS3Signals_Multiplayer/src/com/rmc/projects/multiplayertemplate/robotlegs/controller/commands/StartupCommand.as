@@ -22,24 +22,26 @@
  * OTHER DEALINGS IN THE SOFTWARE.                                      
  */
 //Marks the right margin of code *******************************************************************
-package com.rmc.projects.multiplayertemplate.robotlegs.controller
+package com.rmc.projects.multiplayertemplate.robotlegs.controller.commands
 {
 	
 	//--------------------------------------
 	//  Imports
 	//--------------------------------------
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.server.MultiplayerServerSignal;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.phrases.LoadPhrasesModelSignal;
 	import com.rmc.projects.multiplayertemplate.robotlegs.model.multiplayer.union.MultiplayerModel;
 	import com.rmc.projects.multiplayertemplate.robotlegs.model.phrases.PhrasesModel;
+	import com.rmc.projects.multiplayertemplate.robotlegs.model.events.phrases.PhrasesModelEvent;
 	import com.rmc.projects.multiplayertemplate.robotlegs.services.ILoadService;
 	import com.rmc.projects.multiplayertemplate.robotlegs.services.phrases.PhrasesLoadService;
 	import com.rmc.projects.multiplayertemplate.robotlegs.view.LobbyViewUIMediator;
-	import com.rmc.projects.multiplayertemplate.robotlegs.view.components.views.LobbyViewUI;
 	
-	import org.robotlegs.base.ContextEvent;
 	import org.robotlegs.mvcs.Command;
 	
+	
 	/**
-	 * <p>Command: Handles the shutdown of the application. (Importance is TBD)</p>
+	 * <p>Command: Starting up the application this kicks off the whole RL experience</p>
 	 * 
 	 * <p>AUTHOR  		: Samuel Asher Rivello (code [at] RivelloMultimediaConsulting [dot] com)</p>
 	 * <p>COMPANY 		: Rivello Multimedia Consulting</p>
@@ -52,8 +54,20 @@ package com.rmc.projects.multiplayertemplate.robotlegs.controller
 	 * </listing>
 	 *
 	 */
-	public class ShutdownCommand extends Command
+	public class StartupCommand extends Command
 	{
+		
+		//--------------------------------------
+		//  Properties
+		//--------------------------------------
+		//PUBLIC
+		/**
+		 * Signal: Marks a request to load the <code>PhrasesModel</code>
+		 * 
+		 */	
+		[Inject]
+		public var loadPhrasesModelSignal : LoadPhrasesModelSignal;
+		
 		
 		//--------------------------------------
 		//  Methods
@@ -66,27 +80,10 @@ package com.rmc.projects.multiplayertemplate.robotlegs.controller
 		 */
 		override public function execute():void
 		{
-			/*
-			
-				REGULARLY CHECK THAT THIS MATCHES 
-					(THE REVERSE OF WHAT IS SETUP IN) THE STARTUP COMMAND
-			
-			*/
-
-			// Model
-			injector.unmap (MultiplayerModel);
-			injector.unmap (PhrasesModel);
-
-			// View
-			mediatorMap.unmapView (LobbyViewUI);
-			
-			// Controller
-			commandMap.unmapEvent 		(ContextEvent.STARTUP,  StartupCommand);
-			commandMap.unmapEvent 		(ContextEvent.SHUTDOWN, ShutdownCommand);
-			
-			// Services
-			injector.unmap (ILoadService, "PhrasesLoadService");
-
+			//	Load All Phrases (Must happen last in this method!)
+			trace ("StartupCommand.execute()");
+			loadPhrasesModelSignal.dispatch ();
 		}
+
 	}
 }
