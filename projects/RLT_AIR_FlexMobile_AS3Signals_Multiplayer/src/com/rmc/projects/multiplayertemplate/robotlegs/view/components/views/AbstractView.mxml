@@ -4,6 +4,8 @@
 	xmlns:s="library://ns.adobe.com/flex/spark" 
 	
 	destructionPolicy="auto"
+	creationComplete="_onCreationComplete (event)"
+	initialize="_onInitialize(event)"
 	>
 	
 	<fx:Script>
@@ -30,6 +32,20 @@
 			
 			
 			//PUBLIC
+			/**
+			 * Signal: When 'Lobby' is Clicked
+			 * 
+			 */
+			public var goToLobby_signal : NativeSignal;
+			
+			
+			/**
+			 * Signal: When 'Game' is Clicked
+			 * 
+			 */
+			public var goToGame_signal : NativeSignal;
+			
+			
 			
 			//PUBLIC CONST
 			
@@ -46,9 +62,34 @@
 			// --------------------------------------
 			// Event Handlers
 			// --------------------------------------
-
-
+			/**
+			 * Handles the aEvent: <code>FlexEvent.INITIALIZE</code>.
+			 * 
+			 * @param aEvent <code>FlexEvent</code> The incoming aEvent payload.
+			 *  
+			 * @return void
+			 * 
+			 */
+			protected function _onInitialize (aEvent : FlexEvent) : void
+			{
+				//SUBCLASSES WILL CALL TO HIDE SOME TOP-CHROME BUTTONS
+				
+			}
 			
+			
+			/**
+			 * Handles the aEvent: <code>FlexEvent.CREATION_COMPLETE</code>.
+			 * 
+			 * @param aEvent <code>FlexEvent</code> The incoming aEvent payload.
+			 *  
+			 * @return void
+			 * 
+			 */
+			protected function _onCreationComplete(aEvent : FlexEvent) : void
+			{
+				goToLobby_signal  		= new NativeSignal	(goToLobby_button, 	MouseEvent.CLICK, MouseEvent);	
+				goToGame_signal  		= new NativeSignal	(goToGame_button, 	MouseEvent.CLICK, MouseEvent);	
+			}
 		]]>
 	</fx:Script>
 	
@@ -67,6 +108,14 @@
 			paddingBottom	=	"10"
 			/>
 	</s:layout>
+	
+	
+	<s:navigationContent>
+		<s:Button id = "goToLobby_button" label = "{phrasesVO.goToLobbyButtonLabel_str}"/>
+	</s:navigationContent>
+	<s:actionContent>
+		<s:Button id = "goToGame_button" label = "{phrasesVO.goToGameButtonLabel_str}"/>
+	</s:actionContent>
 	
 	
 </s:View>

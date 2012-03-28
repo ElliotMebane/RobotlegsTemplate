@@ -53,6 +53,16 @@ package com.rmc.projects.multiplayertemplate.robotlegs.model.vo.phrases
 		 * 
 		 */		
 		public var applicationTitle_str : String;
+		public var lobbyViewTitle_str : String;
+		public var gameViewTitle_str : String;
+		public var goToLobbyButtonLabel_str : String;
+		public var goToGameButtonLabel_str : String;
+
+			
+		
+		//
+		public var scoreboardLabel_str : String;
+		public var gameLabel_str : String;
 		public var instructionsLabelText_str : String;
 		public var instructionsBodyText_str : String;
 		public var statusLabelText_str : String;

@@ -49,10 +49,10 @@ package com.rmc.projects.multiplayertemplate.robotlegs
 	import com.rmc.projects.multiplayertemplate.robotlegs.services.multiplayer.IMultiplayerService;
 	import com.rmc.projects.multiplayertemplate.robotlegs.services.multiplayer.union.UnionMultiplayerService;
 	import com.rmc.projects.multiplayertemplate.robotlegs.services.phrases.PhrasesLoadService;
-	import com.rmc.projects.multiplayertemplate.robotlegs.view.ClearMessageViewUIMediator;
+	import com.rmc.projects.multiplayertemplate.robotlegs.view.GameViewUIMediator;
 	import com.rmc.projects.multiplayertemplate.robotlegs.view.LobbyViewUIMediator;
 	import com.rmc.projects.multiplayertemplate.robotlegs.view.MainUIMediator;
-	import com.rmc.projects.multiplayertemplate.robotlegs.view.components.views.ClearMessageViewUI;
+	import com.rmc.projects.multiplayertemplate.robotlegs.view.components.views.GameViewUI;
 	import com.rmc.projects.multiplayertemplate.robotlegs.view.components.views.LobbyViewUI;
 	
 	import flash.events.Event;
@@ -158,7 +158,7 @@ package com.rmc.projects.multiplayertemplate.robotlegs
 			
 			mediatorMap.mapView		(Main, 		 			MainUIMediator);
 			mediatorMap.mapView		(LobbyViewUI, 			LobbyViewUIMediator);
-			mediatorMap.mapView		(ClearMessageViewUI, 	ClearMessageViewUIMediator);
+			mediatorMap.mapView		(GameViewUI, 			GameViewUIMediator);
 			
 		}
 		

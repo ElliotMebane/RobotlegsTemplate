@@ -50,7 +50,7 @@ package com.rmc.projects.multiplayertemplate.robotlegs.model.vo.multiplayer
 		 * 
 		 * 
 		 */		
-		public var fromUsername : String;
+		public var fromUserName : String;
 		
 		
 		/**
@@ -94,7 +94,7 @@ package com.rmc.projects.multiplayertemplate.robotlegs.model.vo.multiplayer
 		 */
 		public function toString() : String
 		{
-			return "<b>" + fromUsername + "</b> said: " + message;
+			return "<b>" + fromUserName + "</b> said: " + message;
 		}
 		
 	}

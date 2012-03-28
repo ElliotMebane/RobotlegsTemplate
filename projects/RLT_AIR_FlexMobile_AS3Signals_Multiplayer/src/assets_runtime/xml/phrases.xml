@@ -4,6 +4,29 @@
 	<phrase name = "applicationTitle_str">
 		<EN>RobotLegsTemplate</EN>
 	</phrase>
+	<phrase name = "lobbyViewTitle_str">
+		<EN>Lobby</EN>
+	</phrase>
+	<phrase name = "gameViewTitle_str">
+		<EN>Game</EN>
+	</phrase>
+	<phrase name = "goToGameButtonLabel_str">
+		<EN>Game</EN>
+	</phrase>
+	<phrase name = "goToLobbyButtonLabel_str">
+		<EN>Lobby</EN>
+	</phrase>
+	
+	
+	
+	
+	
+	<phrase name = "scoreboardLabel_str">
+		<EN>Score</EN>
+	</phrase>
+	<phrase name = "gameLabel_str">
+		<EN>Game</EN>
+	</phrase>
 	<phrase name = "instructionsLabelText_str">
 		<EN>Instructions</EN>
 	</phrase>

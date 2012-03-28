@@ -26,6 +26,7 @@ package com.rmc.projects.multiplayertemplate.robotlegs.services.multiplayer
 {
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.message.MultiplayerMessageReceivedSignal;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.room.MultiplayerRoomAttributeUpdatedSignal;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.room.MultiplayerRoomClientAttributeUpdatedSignal;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.room.MultiplayerRoomJoinedSignal;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.room.MultiplayerRoomLeftSignal;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.room.MultiplayerRoomOccupantAddedSignal;
@@ -71,9 +72,9 @@ package com.rmc.projects.multiplayertemplate.robotlegs.services.multiplayer
 		function get multiplayerRoomOccupantCountChangedSignal() 	:  MultiplayerRoomOccupantCountChangedSignal;
 		function get multiplayerRoomOccupantAddedSignal() 			:  MultiplayerRoomOccupantAddedSignal;
 		function get multiplayerRoomOccupantRemovedSignal() 		:  MultiplayerRoomOccupantRemovedSignal;
+		function get multiplayerRoomClientAttributeUpdatedSignal() 	:  MultiplayerRoomClientAttributeUpdatedSignal;
 		function get multiplayerRoomAttributeUpdatedSignal() 		:  MultiplayerRoomAttributeUpdatedSignal;
 
-		
 		//--------------------------------------
 		//  Methods
 		//--------------------------------------				

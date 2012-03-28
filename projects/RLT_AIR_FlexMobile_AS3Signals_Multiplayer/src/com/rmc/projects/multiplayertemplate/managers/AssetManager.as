@@ -1,8 +1,7 @@
 package com.rmc.projects.multiplayertemplate.managers
 {
-	import com.rmc.projects.robotlegstemplate.robotlegs.model.events.flexmobile.MultiplayerConnectEvent;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.events.ViewNavigatorEvent;
 	
-	import spark.components.View;
 	import spark.transitions.CrossFadeViewTransition;
 	import spark.transitions.SlideViewTransition;
 	import spark.transitions.SlideViewTransitionMode;
@@ -48,7 +47,7 @@ package com.rmc.projects.multiplayertemplate.managers
 				var viewTransition:SlideViewTransition = new SlideViewTransition();
 				
 				//USE DIFFERENT DIRECTION FOR POP VS PUSH
-				if (aViewNavigatorEventType_str == MultiplayerConnectEvent.POP_VIEW) {
+				if (aViewNavigatorEventType_str == ViewNavigatorEvent.POP_VIEW) {
 					viewTransition.direction 	= ViewTransitionDirection.RIGHT;
 				} else {
 					viewTransition.direction 	= ViewTransitionDirection.LEFT;

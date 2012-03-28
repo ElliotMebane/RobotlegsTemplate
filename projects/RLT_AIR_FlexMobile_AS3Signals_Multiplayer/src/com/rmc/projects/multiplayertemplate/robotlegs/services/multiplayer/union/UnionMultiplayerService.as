@@ -30,6 +30,7 @@ package com.rmc.projects.multiplayertemplate.robotlegs.services.multiplayer.unio
 	// --------------------------------------
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.message.MultiplayerMessageReceivedSignal;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.room.MultiplayerRoomAttributeUpdatedSignal;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.room.MultiplayerRoomClientAttributeUpdatedSignal;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.room.MultiplayerRoomJoinedSignal;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.room.MultiplayerRoomLeftSignal;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.room.MultiplayerRoomOccupantAddedSignal;
@@ -111,7 +112,7 @@ package com.rmc.projects.multiplayertemplate.robotlegs.services.multiplayer.unio
 		private var _multiplayerRoomOccupantCountChangedSignal : MultiplayerRoomOccupantCountChangedSignal;
 		public function get multiplayerRoomOccupantCountChangedSignal () :MultiplayerRoomOccupantCountChangedSignal { return _multiplayerRoomOccupantCountChangedSignal; }
 		
-
+		
 		/**
 		 * Signal: 
 		 * 
@@ -135,6 +136,14 @@ package com.rmc.projects.multiplayertemplate.robotlegs.services.multiplayer.unio
 		 */
 		private var _multiplayerRoomAttributeUpdatedSignal : MultiplayerRoomAttributeUpdatedSignal;
 		public function get multiplayerRoomAttributeUpdatedSignal () :MultiplayerRoomAttributeUpdatedSignal { return _multiplayerRoomAttributeUpdatedSignal; }
+		
+		
+		/**
+		 * Signal: 
+		 * 
+		 */
+		private var _multiplayerRoomClientAttributeUpdatedSignal : MultiplayerRoomClientAttributeUpdatedSignal;
+		public function get multiplayerRoomClientAttributeUpdatedSignal () :MultiplayerRoomClientAttributeUpdatedSignal { return _multiplayerRoomClientAttributeUpdatedSignal; }
 		
 		
 		/**
@@ -178,15 +187,16 @@ package com.rmc.projects.multiplayertemplate.robotlegs.services.multiplayer.unio
 			// VARIABLES
 			
 			// PROPERTIES
-			_multiplayerConnectedSignal 				= new MultiplayerConnectedSignal ();
-			_multiplayerDisconnectedSignal 				= new MultiplayerDisconnectedSignal ();
-			_multiplayerRoomJoinedSignal				= new MultiplayerRoomJoinedSignal ();
-			_multiplayerRoomLeftSignal					= new MultiplayerRoomLeftSignal ();
-			_multiplayerMessageReceivedSignal			= new MultiplayerMessageReceivedSignal ();
-			_multiplayerRoomOccupantCountChangedSignal	= new MultiplayerRoomOccupantCountChangedSignal ();
-			_multiplayerRoomOccupantAddedSignal			= new MultiplayerRoomOccupantAddedSignal ();
-			_multiplayerRoomOccupantRemovedSignal		= new MultiplayerRoomOccupantRemovedSignal ();
-			_multiplayerRoomAttributeUpdatedSignal		= new MultiplayerRoomAttributeUpdatedSignal ();
+			_multiplayerConnectedSignal 					= new MultiplayerConnectedSignal ();
+			_multiplayerDisconnectedSignal 					= new MultiplayerDisconnectedSignal ();
+			_multiplayerRoomJoinedSignal					= new MultiplayerRoomJoinedSignal ();
+			_multiplayerRoomLeftSignal						= new MultiplayerRoomLeftSignal ();
+			_multiplayerMessageReceivedSignal				= new MultiplayerMessageReceivedSignal ();
+			_multiplayerRoomOccupantCountChangedSignal		= new MultiplayerRoomOccupantCountChangedSignal ();
+			_multiplayerRoomOccupantAddedSignal				= new MultiplayerRoomOccupantAddedSignal ();
+			_multiplayerRoomOccupantRemovedSignal			= new MultiplayerRoomOccupantRemovedSignal ();
+			_multiplayerRoomAttributeUpdatedSignal			= new MultiplayerRoomAttributeUpdatedSignal ();
+			_multiplayerRoomClientAttributeUpdatedSignal 	= new MultiplayerRoomClientAttributeUpdatedSignal();
 			
 			// EVENTS
 			
@@ -246,7 +256,7 @@ package com.rmc.projects.multiplayertemplate.robotlegs.services.multiplayer.unio
 		{
 			multiplayerModel.API.disconnect();
 		}
-
+		
 		
 		/**
 		 * 
@@ -272,7 +282,7 @@ package com.rmc.projects.multiplayertemplate.robotlegs.services.multiplayer.unio
 				}
 				
 				//*GET* THE NAME FOR EACH
-				user.name = client.getAttribute(UserVO.USER_NAME_ATTRIBUTE_NAME);
+				user.userName = client.getAttribute(UserVO.USER_NAME_ATTRIBUTE_NAME);
 				user.isMe = client.isSelf();
 				multiplayerModel.users.push (user);
 				
@@ -294,15 +304,17 @@ package com.rmc.projects.multiplayertemplate.robotlegs.services.multiplayer.unio
 			//STORE THE NAME WE WANT TO USE FOR OUR USERNAME. IT WILL BE USED INTERNALLY LATER.
 			//NOTE: WE COULD ADD A SIGNAL/COMMAND/METHOD SETUP for 'setUserName' later if we want...
 			_lastRequestedUserName_str = aLastRequestedUserName_str;
-				
+			
 			
 			//JOIN THE ROOM
 			if (multiplayerModel.currentRoom == null) {
 				multiplayerModel.currentRoom = multiplayerModel.API.getRoomManager().createRoom(aRoomName_str);
-				multiplayerModel.currentRoom.addEventListener(RoomEvent.JOIN, 					_onRoomJoined);
-				multiplayerModel.currentRoom.addEventListener(RoomEvent.LEAVE, 					_onRoomLeft);
-				multiplayerModel.currentRoom.addEventListener(RoomEvent.OCCUPANT_COUNT, 		_onRoomOccupantCountChanged);
-				multiplayerModel.currentRoom.addEventListener(AttributeEvent.UPDATE, 			_onRoomAttributeUpdated);
+				multiplayerModel.currentRoom.addEventListener(RoomEvent.JOIN, 						_onRoomJoined);
+				multiplayerModel.currentRoom.addEventListener(RoomEvent.LEAVE, 						_onRoomLeft);
+				multiplayerModel.currentRoom.addEventListener(RoomEvent.OCCUPANT_COUNT, 			_onRoomOccupantCountChanged);
+				multiplayerModel.currentRoom.addEventListener(AttributeEvent.UPDATE, 				_onRoomAttributeUpdated);
+				multiplayerModel.currentRoom.addEventListener(RoomEvent.UPDATE_CLIENT_ATTRIBUTE, 	_onRoomClientAttributeUpdated);
+				//
 				multiplayerModel.currentRoom.addMessageListener(MessageVO.MESSAGE_TYPE, 		_onMessageReceived );
 				multiplayerModel.currentRoom.join();
 			} else {
@@ -322,7 +334,7 @@ package com.rmc.projects.multiplayertemplate.robotlegs.services.multiplayer.unio
 		public function leaveCurrentRoom():void
 		{ 
 			multiplayerModel.currentRoom.leave();	
-
+			
 		}
 		
 		
@@ -338,11 +350,8 @@ package com.rmc.projects.multiplayertemplate.robotlegs.services.multiplayer.unio
 		 */
 		public function sendMessage(aChatMessageVO : MessageVO):void
 		{ 
-			if (multiplayerModel.me) {
-				aChatMessageVO.fromUsername = multiplayerModel.me.name;
-			} else {
-				aChatMessageVO.fromUsername = "{Unknown User}";
-			}
+			//PACK IN THE 'FROM'
+			aChatMessageVO.fromUserName = multiplayerModel.me.userName;
 			multiplayerModel.currentRoom.sendMessage(MessageVO.MESSAGE_TYPE, true, null, aChatMessageVO.message);
 		}
 		
@@ -367,7 +376,7 @@ package com.rmc.projects.multiplayertemplate.robotlegs.services.multiplayer.unio
 			_multiplayerConnectedSignal.dispatch(aEvent);
 			
 		}
-
+		
 		
 		/**
 		 * Handles the Event: <code>ReactorEvent.CLOSE</code>.
@@ -414,15 +423,15 @@ package com.rmc.projects.multiplayertemplate.robotlegs.services.multiplayer.unio
 			var roomWeJustLeft : Room = (aEvent.target as Room);
 			_multiplayerRoomLeftSignal.dispatch(aEvent);
 			roomWeJustLeft.removeEventListener(RoomEvent.JOIN, 				_onRoomJoined);
-			roomWeJustLeft.removeEventListener(RoomEvent.LEAVE, 				_onRoomLeft);
+			roomWeJustLeft.removeEventListener(RoomEvent.LEAVE, 			_onRoomLeft);
 			//
 			roomWeJustLeft.removeEventListener(RoomEvent.ADD_OCCUPANT, 		_onRoomOccupantAdded);
 			roomWeJustLeft.removeEventListener(RoomEvent.REMOVE_OCCUPANT, 	_onRoomOccupantRemoved);
-			roomWeJustLeft.removeEventListener(RoomEvent.OCCUPANT_COUNT, 		_onRoomOccupantCountChanged);
+			roomWeJustLeft.removeEventListener(RoomEvent.OCCUPANT_COUNT, 	_onRoomOccupantCountChanged);
 			//
 			//
 			roomWeJustLeft.removeEventListener(AttributeEvent.UPDATE, 		_onRoomAttributeUpdated);
-			roomWeJustLeft.removeMessageListener(MessageVO.MESSAGE_TYPE, 		_onMessageReceived );
+			roomWeJustLeft.removeMessageListener(MessageVO.MESSAGE_TYPE, 	_onMessageReceived );
 			//
 			multiplayerModel.currentRoom = null;
 			//
@@ -497,6 +506,21 @@ package com.rmc.projects.multiplayertemplate.robotlegs.services.multiplayer.unio
 			
 		}
 		
+		/**
+		 * Handles the Event: <code>RoomEvent.UPDATE_CLIENT_ATTRIBUTE</code>.
+		 * 
+		 * @param aEvent <code>RoomEvent</code> The incoming aEvent payload.
+		 *  
+		 * @return void
+		 * 
+		 */
+		protected function _onRoomClientAttributeUpdated(aEvent : RoomEvent):void
+		{ 
+			//
+			_multiplayerRoomClientAttributeUpdatedSignal.dispatch(aEvent);
+			
+		}
+		
 		
 		/**
 		 * Handles the Event: <code>RoomEvent.                </code>.
@@ -509,13 +533,10 @@ package com.rmc.projects.multiplayertemplate.robotlegs.services.multiplayer.unio
 		protected function _onMessageReceived(aFrom_iclient: IClient, aMessage_str : String):void
 		{ 
 			var chatMessageVO:MessageVO = new MessageVO(aMessage_str);
-			chatMessageVO.fromUsername = aFrom_iclient.getAttribute(UserVO.USER_NAME_ATTRIBUTE_NAME);
+			chatMessageVO.fromUserName = aFrom_iclient.getAttribute(UserVO.USER_NAME_ATTRIBUTE_NAME);
 			_multiplayerMessageReceivedSignal.dispatch(new MultiplayerMessageEvent (MultiplayerMessageEvent.RECEIVED, chatMessageVO) );
 			
 		}
 		
-		
-		
 	}
 }
-

@@ -50,7 +50,7 @@ package com.rmc.projects.multiplayertemplate.robotlegs.model.vo.multiplayer
 		 * 
 		 * 
 		 */		
-		public var name : String;
+		public var userName : String;
 		
 		/**
 		 * 
@@ -77,7 +77,7 @@ package com.rmc.projects.multiplayertemplate.robotlegs.model.vo.multiplayer
 		{
 			//SUPER
 			super();
-			name = "";
+			userName = "";
 			isMe = false;
 		}
 		

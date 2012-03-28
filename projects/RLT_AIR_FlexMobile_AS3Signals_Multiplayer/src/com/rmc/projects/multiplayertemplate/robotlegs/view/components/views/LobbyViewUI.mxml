@@ -4,9 +4,10 @@
 	xmlns:fx="http://ns.adobe.com/mxml/2009" 
 	xmlns:s="library://ns.adobe.com/flex/spark" 
 	
-	creationComplete="_onCreationComplete(event)"
 	title="{phrasesVO.applicationTitle_str}"
 	enabled="{!isAwaitingServer}"
+	initialize="_onInitialize(event)"
+	
 	
 	>
 	
@@ -116,6 +117,24 @@
 			// Event Handlers
 			// --------------------------------------
 			/**
+			 * Handles the aEvent: <code>FlexEvent.INITIALIZE</code>.
+			 * 
+			 * @param aEvent <code>FlexEvent</code> The incoming aEvent payload.
+			 *  
+			 * @return void
+			 * 
+			 */
+			override protected function _onInitialize (aEvent : FlexEvent) : void
+			{
+				super._onInitialize(aEvent);
+				
+				//CHANGE SOME TOP-CHROME BUTTONS
+				goToLobby_button.visible = false;
+				goToLobby_button.width = 0;
+				
+			}
+			
+			/**
 			 * Handles the aEvent: <code>FlexEvent.CREATION_COMPLETE</code>.
 			 * 
 			 * @param aEvent <code>FlexEvent</code> The incoming aEvent payload.
@@ -123,8 +142,11 @@
 			 * @return void
 			 * 
 			 */
-			private function _onCreationComplete(aEvent : FlexEvent) : void
+			override protected function _onCreationComplete(aEvent : FlexEvent) : void
 			{
+				super._onCreationComplete(aEvent);
+				
+				//
 				connectMultiplayer_signal  		= new NativeSignal	(connectMultiplayer_button, 	MouseEvent.CLICK, MouseEvent);	
 				disconnectMultiplayer_signal  	= new NativeSignal	(disconnectMultiplayer_button, 	MouseEvent.CLICK, MouseEvent);	
 				//
@@ -148,6 +170,8 @@
 			{
 				sendMessage_signal.dispatch();
 			}
+			
+			
 			
 			
 		]]>
@@ -204,7 +228,7 @@
 	<s:HGroup width="100%" height="100%">
 		<s:VGroup width="50%" height="100%">
 			<s:Label 											width="100%" text="{phrasesVO.usersLabelText_str}"  />
-			<s:List id = "users_list" labelField="name" width="100%" height="100%" borderVisible="true" borderColor="0x000000" borderAlpha="1" />
+			<s:List id = "users_list" labelField="userName" width="100%" height="100%" borderVisible="true" borderColor="0x000000" borderAlpha="1" />
 		</s:VGroup>
 		<s:VGroup width="50%" height="100%">
 			<s:Label 											width="100%" text="{phrasesVO.outputLabelText_str}"  />

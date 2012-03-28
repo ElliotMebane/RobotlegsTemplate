@@ -27,8 +27,11 @@ package com.rmc.projects.multiplayertemplate.robotlegs.view
 	//--------------------------------------
 	//  Imports
 	//--------------------------------------
+	import com.rmc.projects.multiplayertemplate.managers.AssetManager;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.events.NativeApplicationEvent;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.events.ViewNavigatorEvent;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.flexmobile.NativeApplicationSignal;
+	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.flexmobile.ViewNavigatorSignal;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.message.MultiplayerMessageReceivedSignal;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.message.MultiplayerMessageSignal;
 	import com.rmc.projects.multiplayertemplate.robotlegs.controller.signals.multiplayer.room.MultiplayerRoomJoinedSignal;
@@ -44,6 +47,7 @@ package com.rmc.projects.multiplayertemplate.robotlegs.view
 	import com.rmc.projects.multiplayertemplate.robotlegs.model.vo.multiplayer.MessageVO;
 	import com.rmc.projects.multiplayertemplate.robotlegs.model.vo.multiplayer.UserVO;
 	import com.rmc.projects.multiplayertemplate.robotlegs.services.multiplayer.IMultiplayerService;
+	import com.rmc.projects.multiplayertemplate.robotlegs.view.components.views.GameViewUI;
 	import com.rmc.projects.multiplayertemplate.robotlegs.view.components.views.LobbyViewUI;
 	
 	import flash.desktop.NativeApplication;
@@ -133,6 +137,13 @@ package com.rmc.projects.multiplayertemplate.robotlegs.view
 		[Inject]
 		public var nativeApplicationSignal : NativeApplicationSignal;
 		
+		/**
+		 * Reference: <code>ViewNavigatorSignal</code>
+		 * 
+		 */	
+		[Inject]
+		public var viewNavigatorSignal : ViewNavigatorSignal;
+		
 		
 		/**
 		 * Service: 
@@ -158,7 +169,7 @@ package com.rmc.projects.multiplayertemplate.robotlegs.view
 		//--------------------------------------
 		//  Constructor
 		//--------------------------------------
-
+		
 		/**
 		 * This is the constructor.
 		 * 
@@ -180,6 +191,8 @@ package com.rmc.projects.multiplayertemplate.robotlegs.view
 		 */
 		override public function onRegister():void
 		{
+			//	SUPER View Listeners
+			lobbyViewUI.goToGame_signal.add					(_onGoToGame);
 			
 			// 	View Listeners
 			lobbyViewUI.connectMultiplayer_signal.add  		(_doMultiplayerConnect);
@@ -218,10 +231,9 @@ package com.rmc.projects.multiplayertemplate.robotlegs.view
 			_isAutomaticallyShowcasingFeatures_boolean = true;
 			
 			//	ONLY CONNECT HERE IF WE ARE NOT CONNECTED
-			trace ("multiplayerModel.API.isReady() " + multiplayerModel.API.isReady());
-			trace ("multiplayerModel.API.isReady() " + multiplayerModel.currentRoom);
-			//if (multiplayerModel.API.isReady()
-			_doMultiplayerConnect (null);
+			if (!multiplayerModel.API.isReady()) {
+				_doMultiplayerConnect (null);
+			}
 			
 		}
 		
@@ -248,6 +260,23 @@ package com.rmc.projects.multiplayertemplate.robotlegs.view
 		}
 		
 		
+		
+		/**
+		 * Handles the aEvent: <code>MouseEvent.CLICK</code>.
+		 * 
+		 * @param aEvent <code>MouseEvent</code> The incoming aEvent payload.
+		 *  
+		 * @return void
+		 * 
+		 */
+		private function _onGoToGame (aEvent : MouseEvent):void
+		{
+			
+			//	CHANGE VIEW
+			viewNavigatorSignal.dispatch(new ViewNavigatorEvent (ViewNavigatorEvent.POP_VIEW, GameViewUI, AssetManager.getViewTransition(ViewNavigatorEvent.PUSH_VIEW) ) );
+			
+		}
+
 		
 		/**
 		 * Handles the aEvent: <code>MouseEvent.CLICK</code>.
@@ -580,10 +609,10 @@ package com.rmc.projects.multiplayertemplate.robotlegs.view
 			//
 			if (StyleableTextField(lobbyViewUI.output_textarea.textDisplay).htmlText.length == 0) {
 				//FIRST LINE EVER
-				StyleableTextField(lobbyViewUI.output_textarea.textDisplay).htmlText = aEvent.messageVO.fromUsername + " : " + aEvent.messageVO.message;
+				StyleableTextField(lobbyViewUI.output_textarea.textDisplay).htmlText = aEvent.messageVO.fromUserName + " : " + aEvent.messageVO.message;
 			} else {
 				//OTHER LINES
-				StyleableTextField(lobbyViewUI.output_textarea.textDisplay).htmlText += aEvent.messageVO.fromUsername + " : " + aEvent.messageVO.message;
+				StyleableTextField(lobbyViewUI.output_textarea.textDisplay).htmlText += aEvent.messageVO.fromUserName + " : " + aEvent.messageVO.message;
 			}
 			
 		}
